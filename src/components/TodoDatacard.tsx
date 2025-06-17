@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchTodos, Todo } from '@/lib/fetchtodo';
+import { Todo } from '@/lib/fetchtodo';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
