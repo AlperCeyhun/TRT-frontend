@@ -1,5 +1,5 @@
 export async function updateTodo(id: number, updates: { completed: boolean }) {
-  const res = await fetch(`/api/todos/${id}`, {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -8,8 +8,9 @@ export async function updateTodo(id: number, updates: { completed: boolean }) {
   });
 
   if (!res.ok) {
-    throw new Error('Failed to update todo');
+    throw new Error(`Failed to update todo with ID ${id}`);
   }
 
-  return await res.json();
+  const data = await res.json();
+  return data;
 }

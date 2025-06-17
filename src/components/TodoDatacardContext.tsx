@@ -37,7 +37,7 @@ const TodoDatacardContext: React.FC<TodoDatacardContextProps> = ({ todos, onChec
         </div>
         <div>
           <Button variant="default" onClick={() => onCheck(todo.id)}>
-            Check Task
+            Update Task
           </Button>
           <Button
             variant="outline"

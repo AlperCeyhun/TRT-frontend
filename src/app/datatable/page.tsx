@@ -14,12 +14,11 @@ export default function Home() {
   };
   
 	return (
-    <div className="items-center justify-items-center min-h-screen relative">
+    <div className="items-center justify-items-center min-h-screen relative mt-8">
         <Button variant={"outline"} className="absolute top-4 left-4" onClick={handleBack}>
             <ArrowBigLeft className="mr-2" />
             Back to Home
         </Button>
-      <p className="text-amber-50 p-5">Landing page</p>
     </div>
   );
 }
