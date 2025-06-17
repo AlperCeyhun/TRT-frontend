@@ -4,7 +4,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { loadTodos } from "@/lib/loadtodo";
-import { deleteTodo } from '@/lib/deleteTodo';
+import { deleteTodo } from '@/lib/deletetodo';
 
 const Todos: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
