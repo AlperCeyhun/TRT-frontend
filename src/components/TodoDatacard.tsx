@@ -16,11 +16,13 @@ const Todos: React.FC = () => {
 
   const totalPages = Math.ceil(todos.length / ITEMS_PER_PAGE);
 
-  const HandleCheck = async (id: number) => {
+  const HandleUpdate = async (id: number) => {
     try {
-      await updateTodo(id, { completed: true});
-      setTodos(todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: true } : todo
+      const todo = todos.find((t) => t.id === id);
+      if (!todo) return;
+      await updateTodo(id, { completed: !todo.completed });
+      setTodos(todos.map((t) =>
+        t.id === id ? { ...t, completed: !t.completed } : t
       ));
     } catch (error) {
       console.error("Delete Task failed", error);
@@ -52,7 +54,7 @@ const Todos: React.FC = () => {
     <div className="space-y-2">
       <h2 className="text-xl font-bold mb-4 text-white">📝To-do List</h2>
       <ul className="space-y-1">
-        <TodoDatacardContext todos={paginatedTodos} onCheck={HandleCheck} onDelete={HandleDelete}/>
+        <TodoDatacardContext todos={paginatedTodos} onCheck={HandleUpdate} onDelete={HandleDelete}/>
       </ul>
       <div className="mt-4 flex justify-center">
         <TodoPagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage}/>
