@@ -8,7 +8,7 @@ import { deleteTodo } from '@/lib/deletetodo';
 import { updateTodo } from '@/lib/updatetodo';
 import { posttodo } from '@/lib/posttodo';
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 5;
 
 const Todos: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);

@@ -29,6 +29,9 @@ export default function RootLayout({
           <h1 className="truncate text-lg font-bold">TODO LIST APP</h1>
         </nav>
         {children}
+        <footer className="text-center text-white mt-auto">
+           <p>&copy; {new Date().getFullYear()} TRT todo app. All rights reserved.</p>
+        </footer>
       </body>
     </html>
   );
