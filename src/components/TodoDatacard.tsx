@@ -45,7 +45,7 @@ const Todos: React.FC = () => {
     if (!newTask.trim()) return;
     try {
       const created = await posttodo({ title: newTask, completed: false });
-      // 👇 Add dummy userId to make it fit the Todo type
+      //dummy userId
       const fullTodo: Todo = {
         ...created,
         userId: 1,
