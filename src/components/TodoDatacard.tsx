@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import TodoPagination from '@/components/TodoPagination';
 import TodoDatacardContext from '@/components/TodoDatacardContext';
+import TodoDatacardTop from "@/components/TodoDatacardTop";
 import { Todo } from '@/lib/fetchtodo';
 import { loadTodos } from "@/lib/loadtodo";
 import { deleteTodo } from '@/lib/deletetodo';
 import { updateTodo } from '@/lib/updatetodo';
+import { posttodo } from '@/lib/posttodo';
 
 const ITEMS_PER_PAGE = 6;
 
@@ -13,6 +15,7 @@ const Todos: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [newTask, setNewTask] = useState<string>("");
 
   const totalPages = Math.ceil(todos.length / ITEMS_PER_PAGE);
 
@@ -25,7 +28,7 @@ const Todos: React.FC = () => {
         t.id === id ? { ...t, completed: !t.completed } : t
       ));
     } catch (error) {
-      console.error("Delete Task failed", error);
+      console.error("Update Task failed", error);
     }
   };
 
@@ -37,6 +40,23 @@ const Todos: React.FC = () => {
       console.error("Delete Task failed", error);
     }
   };
+
+  const handleAddTask = async () => {
+    if (!newTask.trim()) return;
+    try {
+      const created = await posttodo({ title: newTask, completed: false });
+      // 👇 Add dummy userId to make it fit the Todo type
+      const fullTodo: Todo = {
+        ...created,
+        userId: 1,
+      };
+      setTodos((prev) => [fullTodo, ...prev]);
+      setNewTask("");
+    } catch (error) {
+      setError("Failed to add task");
+    }
+  };
+
 
   useEffect(() => {
     loadTodos(setTodos, setError, setLoading);
@@ -51,11 +71,13 @@ const Todos: React.FC = () => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="space-y-2">
-      <h2 className="text-xl font-bold mb-4 text-white">📝To-do List</h2>
-      <ul className="space-y-1">
+    <div className="space-y-4">
+      <div className='flex items-center justify-between mb-4'>
+        <TodoDatacardTop newTask={newTask} setNewTask={setNewTask} handleAddTask={handleAddTask}/>
+      </div>
+      <div className="space-y-1">
         <TodoDatacardContext todos={paginatedTodos} onCheck={HandleUpdate} onDelete={HandleDelete}/>
-      </ul>
+      </div>
       <div className="mt-4 flex justify-center">
         <TodoPagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage}/>
       </div>
