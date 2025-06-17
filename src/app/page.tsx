@@ -1,12 +1,29 @@
 "use client";
+
 import React from "react";
-import TodoTable from "@/components/TodoTable";
+import TodoTable from "@/components/TodoDatacard";
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+
+  const router = useRouter();
+
+  const handleDataCard = () => {
+    router.push("/datacard");
+  };
+
+  const handleDataTable = () => {
+    router.push("/datatable");
+  };
+
   return (
-    <div className="items-center justify-items-center min-h-screen bg-black font-[family-name:var(--font-geist-sans)]">
+    <div className="items-center justify-items-center min-h-screen">
       <p className="text-amber-50 p-5">Landing page</p>
-      <TodoTable/>
+      <div className="space-x-4">
+        <Button onClick={handleDataCard}>Todo list with data card</Button>
+        <Button onClick={handleDataTable}>Todo List with data table</Button>
+      </div>
     </div>
   );
 }
