@@ -13,5 +13,5 @@ export async function fetchTodos(): Promise<Todo[]> {
   }
 
   const data: Todo[] = await res.json();
-  return data.slice(0, 10); // Just return the first 10 todos
+  return data.slice(0, 10);
 }
