@@ -24,9 +24,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <nav className="flex items-center justify-between p-4 bg-white text-black">
+          <h1>
+            TODO LIST APP
+          </h1>
+        </nav>
         {children}
       </body>
     </html>
