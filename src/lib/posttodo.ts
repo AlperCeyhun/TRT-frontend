@@ -1,5 +1,5 @@
 export async function posttodo(newTodo: { title: string; completed?: boolean }) {
-  const res = await fetch("https://jsonplaceholder.typicode.com/todos", {
+  const res = await fetch("http://localhost:5195/api/todo-tasks", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

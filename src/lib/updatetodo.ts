@@ -1,6 +1,6 @@
 export async function updateTodo(id: number, updates: { completed: boolean }) {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
-    method: 'PATCH',
+  const res = await fetch(`http://localhost:5195/api/todo-tasks/${id}`, {
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },

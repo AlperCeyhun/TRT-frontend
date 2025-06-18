@@ -6,7 +6,7 @@ export type Todo = {
 };
 
 export async function fetchTodos(): Promise<Todo[]> {
-  const res = await fetch('https://jsonplaceholder.typicode.com/todos');
+  const res = await fetch('http://localhost:5195/api/todo-tasks');
 
   if (!res.ok) {
     throw new Error(`Failed to fetch todos. Status: ${res.status}`);
