@@ -15,7 +15,8 @@ const Todos: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [newTask, setNewTask] = useState<string>("");
+  const [newTitle, setNewTitle] = useState<string>("");
+  const [newDescription, setNewDescription] = useState<string>("");
 
   const totalPages = Math.ceil(todos.length / ITEMS_PER_PAGE);
 
@@ -42,16 +43,17 @@ const Todos: React.FC = () => {
   };
 
   const handleAddTask = async () => {
-    if (!newTask.trim()) return;
+    if (!newTitle.trim()) return;
     try {
-      const created = await posttodo({ title: newTask, completed: false });
+      const created = await posttodo({ title: newTitle,description: newDescription, completed: false });
       //dummy userId
       const fullTodo: Todo = {
         ...created,
         userId: 1,
+        description: newDescription || "",
       };
       setTodos((prev) => [fullTodo, ...prev]);
-      setNewTask("");
+      setNewTitle("");
     } catch (error) {
       setError("Failed to add task");
     }
@@ -67,13 +69,12 @@ const Todos: React.FC = () => {
     currentPage * ITEMS_PER_PAGE
   );
 
-  if (loading) return <p className="text-gray-500">Loading your quests...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
+
 
   return (
     <div className="space-y-4">
       <div className='flex items-center justify-between mb-4'>
-        <TodoDatacardTop newTask={newTask} setNewTask={setNewTask} handleAddTask={handleAddTask}/>
+        <TodoDatacardTop newTitle={newTitle} setNewTitle={setNewTitle} newDescription={newDescription} setNewDescription={setNewDescription} handleAddTask={handleAddTask}/>
       </div>
       <div className="space-y-1">
         <TodoDatacardContext todos={paginatedTodos} onCheck={HandleUpdate} onDelete={HandleDelete}/>

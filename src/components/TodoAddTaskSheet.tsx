@@ -13,12 +13,20 @@ import { Plus } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 
 interface AddTaskSheetProps {
-  newTask: string;
-  setNewTask: Dispatch<SetStateAction<string>>;
+  newTitle: string;
+  newDescription: string;
+  setNewTitle: Dispatch<SetStateAction<string>>;
+  setNewDescription: Dispatch<SetStateAction<string>>;
   handleAddTask: () => void;
 }
 
-export function AddTaskSheet({ newTask, setNewTask, handleAddTask }: AddTaskSheetProps) {
+export function AddTaskSheet({
+  newTitle,
+  newDescription,
+  setNewTitle,
+  setNewDescription,
+  handleAddTask,
+}: AddTaskSheetProps) {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -32,15 +40,48 @@ export function AddTaskSheet({ newTask, setNewTask, handleAddTask }: AddTaskShee
           <SheetTitle>Add New Task</SheetTitle>
           <SheetDescription>Write the name of your next task!</SheetDescription>
         </SheetHeader>
-        <div className="py-4 space-y-4">
-          <Input
-            type="text"
-            placeholder="e.g. Defeat the dragon"
-            value={newTask}
-            onChange={(e) => setNewTask(e.target.value)}
-          />
+        <div className="flex flex-col space-y-4 mt-4">
+          <div className="flex flex-col space-y-1">
+            <label htmlFor="task-title" className="text-sm font-medium">
+              Title
+            </label>
+            <Input
+              id="task-title"
+              type="text"
+              placeholder="e.g. Defeat the Grafted Scion"
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+              maxLength={32}
+            />
+            <span className={`text-xs text-right ${newTitle.length > 30 ? "text-red-500" : "text-muted-foreground"}`}>
+              {newTitle.length}/32 characters
+            </span>
+          </div>
+
+          <div className="flex flex-col space-y-1">
+            <label htmlFor="task-desc" className="text-sm font-medium">
+              Description
+            </label>
+            <textarea
+              id="task-desc"
+              placeholder="e.g. Put thy ambitions to rest."
+              className="border rounded-md p-2 resize-none min-h-[100px]"
+              value={newDescription}
+              onChange={(e) => setNewDescription(e.target.value)}
+              maxLength={32}
+            />
+            <span className={`text-xs text-right ${newDescription.length > 30 ? "text-red-500" : "text-muted-foreground"}`}>
+              {newDescription.length}/32 characters
+            </span>
+          </div>
+
           <SheetClose asChild>
-            <Button variant={"default"} className="bg-black ml-2" onClick={handleAddTask} disabled={!newTask.trim()}>
+            <Button
+              variant="default"
+              className="bg-black ml-2 mr-2 mt-8"
+              onClick={handleAddTask}
+              disabled={!newTitle.trim() && !newDescription.trim()}
+            >
               Add Task
             </Button>
           </SheetClose>
@@ -49,4 +90,5 @@ export function AddTaskSheet({ newTask, setNewTask, handleAddTask }: AddTaskShee
     </Sheet>
   );
 }
+
 export default AddTaskSheet;
