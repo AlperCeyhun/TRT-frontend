@@ -18,8 +18,12 @@ export default function Home() {
   };
 
   return (
-    <div className="items-center justify-items-center min-h-screen text-white">
-      YOU SHALL NOT BE HERE
+    <div className="items-center justify-items-center min-h-screen">
+      <p className="text-amber-50 p-5">Landing page</p>
+      <div className="space-x-4">
+        <Button onClick={handleDataCard}>Todo list with data card</Button>
+        <Button onClick={handleDataTable}>Todo List with data table</Button>
+      </div>
     </div>
   );
 }
