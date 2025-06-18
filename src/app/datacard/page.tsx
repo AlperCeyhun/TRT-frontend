@@ -11,7 +11,7 @@ export default function Home() {
   const router = useRouter();
   
   const handleBack = () => {
-    router.push("/");
+    router.push("/home");
   };
   
   return (
