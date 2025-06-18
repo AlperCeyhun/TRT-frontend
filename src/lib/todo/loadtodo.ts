@@ -1,4 +1,4 @@
-import { fetchTodos, Todo } from "@/lib/fetchtodo";
+import { fetchTodos, Todo } from "@/lib/todo/fetchtodo";
 
 export const loadTodos = async (
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>,
