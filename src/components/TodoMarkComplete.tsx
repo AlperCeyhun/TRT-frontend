@@ -20,7 +20,7 @@ export function MarkCompleteDropdownItem({ todo, onUpdated }: Props) {
         title: todo.title,
         description: todo.description,
         category: todo.category,
-        completed: true,
+        completed: !todo.completed,
       };
       await updateTodo(todo.id, updates);
       console.log(`Marked todo ${todo.id} as complete`);
@@ -32,7 +32,7 @@ export function MarkCompleteDropdownItem({ todo, onUpdated }: Props) {
   };
   return (
     <DropdownMenuItem onClick={handleMarkComplete}>
-      Mark Complete
+      {todo.completed ? "Mark Incomplete" : "Mark Complete"}
     </DropdownMenuItem>
   );
 }
