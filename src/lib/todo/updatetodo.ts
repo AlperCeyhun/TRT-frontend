@@ -1,6 +1,13 @@
-import { Category } from "@/lib/fetchtodo";
+import { Category } from "@/lib/todo/fetchtodo";
 
-export async function updateTodo(id: number, updates: { completed: boolean, title?: string, description?: string, category?: Category}) {
+export type UpdatePayload = {
+  title: string;
+  description: string;
+  category: Category;
+  completed: boolean;
+};
+
+export async function updateTodo(id: number, updates: UpdatePayload) {
   const res = await fetch(`http://localhost:5195/api/todo-tasks/${id}`, {
     method: 'PUT',
     headers: {
