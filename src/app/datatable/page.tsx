@@ -54,14 +54,14 @@ export default function Home() {
 
 	return (
     <div className="items-center justify-items-center min-h-screen relative mt-8">
-        <Button variant={"outline"} className="absolute top-4 left-4" onClick={handleBack}>
-            <ArrowBigLeft className="mr-2" />
-            Back to Home
-        </Button>
-        <TodoDatacardTop newTask={newTask} setNewTask={setNewTask} handleAddTask={handleAddTask} />
+        <TodoDatacardTop newTask={newTask} setNewTask={setNewTask} handleAddTask={handleAddTask} isTableView={true}/>
         <div className="items-center justify-items-center mt-8 min-w-[800px]">
-            <TodoDataTable todos={todos} />
+            <TodoDataTable todos={todos}/>
         </div>
     </div>
   );
 }
+//<Button variant={"outline"} className="absolute top-4 left-4" onClick={handleBack}>
+//  <ArrowBigLeft className="mr-2"/>
+//  Back to Home
+//</Button>

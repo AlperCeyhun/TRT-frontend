@@ -112,7 +112,13 @@ export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
                 Copy Title
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Mark Complete</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => {
+                  // add markcomplete .ts functionality here
+                  console.log(`Marking todo ${todo.id} as complete`);
+                }}>
+                Mark Complete
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
