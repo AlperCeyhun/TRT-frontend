@@ -1,4 +1,6 @@
-export async function updateTodo(id: number, updates: { completed: boolean }) {
+import { Category } from "@/lib/fetchtodo";
+
+export async function updateTodo(id: number, updates: { completed: boolean, title?: string, description?: string, category?: Category}) {
   const res = await fetch(`http://localhost:5195/api/todo-tasks/${id}`, {
     method: 'PUT',
     headers: {

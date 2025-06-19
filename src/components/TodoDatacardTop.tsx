@@ -1,12 +1,13 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { AddTaskSheet } from '@/components/TodoAddTaskSheet';
+import { Category } from "@/lib/fetchtodo";
 
 interface TodoDatacardTopProps {
   newTitle: string;
   newDescription: string;
   setNewTitle: Dispatch<SetStateAction<string>>;
   setNewDescription: Dispatch<SetStateAction<string>>;
-  handleAddTask: () => void;
+  handleAddTask: (category: Category | null) => void;
 }
 
 const TodoDatacardTop: React.FC<TodoDatacardTopProps> = ({

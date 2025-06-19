@@ -1,8 +1,15 @@
+export enum Category {
+  Acil = "Acil",
+  Normal = "Normal",
+  DusukOncelik = "DusukOncelik"
+}
+
 export type Todo = {
   userId: number;
   id: number;
   title: string;
   description: string;
+  category: Category;
   completed: boolean;
 };
 
