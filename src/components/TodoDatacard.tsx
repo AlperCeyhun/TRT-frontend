@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import TodoPagination from '@/components/TodoPagination';
 import TodoDatacardContext from '@/components/TodoDatacardContext';
 import TodoDatacardTop from "@/components/TodoDatacardTop";
-import { Todo } from '@/lib/fetchtodo';
-import { Category } from '@/lib/fetchtodo';
-import { loadTodos } from "@/lib/loadtodo";
-import { deleteTodo } from '@/lib/deletetodo';
-import { updateTodo } from '@/lib/updatetodo';
-import { posttodo } from '@/lib/posttodo';
+import { Todo } from '@/lib/todo/fetchtodo';
+import { Category } from '@/lib/todo/fetchtodo';
+import { loadTodos } from "@/lib/todo/loadtodo";
+import { deleteTodo } from '@/lib/todo/deletetodo';
+import { updateTodo } from '@/lib/todo/updatetodo';
+import { posttodo } from '@/lib/todo/posttodo';
 
 const ITEMS_PER_PAGE = 5;
 

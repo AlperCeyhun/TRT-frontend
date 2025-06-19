@@ -21,7 +21,7 @@ interface TodoDatacardContextProps {
 const TodoDatacardContext: React.FC<TodoDatacardContextProps> = ({ todos, onCheck, onDelete }) => (
   <>
     {todos.map((todo) => (
-      <Card key={todo.id} className="w-[600px] h-[150px] flex flex-row justify-between items-center p-4">
+      <Card key={todo.id} className="w-[800px] h-[150px] flex flex-row justify-between items-center p-4">
         <div>
           <CardHeader className="p-0 mb-1">
             <CardTitle className="w-[400px] min-h-[60px] break-words text-lg font-semibold">

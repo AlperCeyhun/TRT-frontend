@@ -11,15 +11,11 @@ export default function Home() {
   const router = useRouter();
   
   const handleBack = () => {
-    router.push("/");
+    router.push("/home");
   };
   
   return (
     <div className="items-center justify-items-center min-h-screen relative mt-8">
-      <Button variant={"outline"} className="absolute top-4 left-4" onClick={handleBack}>
-        <ArrowBigLeft className="mr-2" />
-  	    Back to Home
-      </Button>
       <TodoDatacard />
     </div>
   );
