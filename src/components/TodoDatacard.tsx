@@ -6,7 +6,7 @@ import { Todo } from '@/lib/todo/fetchtodo';
 import { Category } from '@/lib/todo/fetchtodo';
 import { loadTodos } from "@/lib/todo/loadtodo";
 import { deleteTodo } from '@/lib/todo/deletetodo';
-import { updateTodo } from '@/lib/todo/updatetodo';
+import { updateTodo, UpdatePayload } from "@/lib/todo/updatetodo";
 import { posttodo } from '@/lib/todo/posttodo';
 
 const ITEMS_PER_PAGE = 5;
@@ -21,13 +21,11 @@ const Todos: React.FC = () => {
 
   const totalPages = Math.ceil(todos.length / ITEMS_PER_PAGE);
 
-  const HandleUpdate = async (id: number) => {
+  const HandleUpdate = async (id: number, updates: UpdatePayload) => {
     try {
-      const todo = todos.find((t) => t.id === id);
-      if (!todo) return;
-      await updateTodo(id, { completed: !todo.completed });
+      await updateTodo(id, updates);
       setTodos(todos.map((t) =>
-        t.id === id ? { ...t, completed: !t.completed } : t
+        t.id === id ? { ...t, ...updates } : t
       ));
     } catch (error) {
       console.error("Update Task failed", error);
@@ -70,8 +68,6 @@ const Todos: React.FC = () => {
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
-
-
 
   return (
     <div className="space-y-4">

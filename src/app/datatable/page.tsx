@@ -2,17 +2,18 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { ArrowBigLeft } from "lucide-react";
 import TodoDatacardTop from "@/components/TodoDatacardTop";
 import { TodoDataTable } from "@/components/TodoDataTable";
 import { loadTodos } from "@/lib/todo/loadtodo";
+import { Category } from "@/lib/todo/fetchtodo";
 
 export type Todo = {
   userId: number
   id: number
   title: string
+  description: string
   completed: boolean
+  category: Category
 }
 
 export default function Home() {
@@ -22,46 +23,44 @@ export default function Home() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [newTitle, setNewTitle] = useState<string>("");
+  const [newDescription, setNewDescription] = useState<string>("");
+
   
   
-  const handleAddTask = async () => {
-    if (!newTask.trim()) return;
+  const handleAddTask = (category: Category | null) => {
+    if (!newTitle.trim() || !newDescription.trim() || !category) return;
 
-    try {
-      // Simulate a fake created task with a unique ID
-      const created: Todo = {
-        id: Math.floor(Math.random() * 10000), // dummy ID
-        title: newTask,
-        completed: false,
-        userId: 1, // dummy userId
-      };
+    const created: Todo = {
+      id: Math.floor(Math.random() * 10000),
+      title: newTitle,
+      completed: false,
+      userId: 1,
+      description: newDescription,
+      category: category, // assuming backend expects this
+    };
 
-      setTodos((prev) => [created, ...prev]);
-      setNewTask("");
-    } catch (error) {
-      setError("Failed to add task (dummy mode)");
-    }
+    setTodos((prev) => [created, ...prev]);
+    setNewTitle("");
+    setNewDescription("");
   };
 
-  
-  const handleBack = () => {
-    router.push("/home");
-  };
-  
   useEffect(() => {
     loadTodos(setTodos, setError, setLoading);
   }, []);
 
 	return (
     <div className="items-center justify-items-center min-h-screen relative mt-8">
-        <TodoDatacardTop newTask={newTask} setNewTask={setNewTask} handleAddTask={handleAddTask} isTableView={true}/>
+        <TodoDatacardTop
+          newTitle={newTitle}
+          setNewTitle={setNewTitle}
+          newDescription={newDescription}
+          setNewDescription={setNewDescription}
+          handleAddTask={handleAddTask}
+          isTableView={true}/>
         <div className="items-center justify-items-center mt-8 min-w-[800px]">
             <TodoDataTable todos={todos}/>
         </div>
     </div>
   );
 }
-//<Button variant={"outline"} className="absolute top-4 left-4" onClick={handleBack}>
-//  <ArrowBigLeft className="mr-2"/>
-//  Back to Home
-//</Button>

@@ -2,7 +2,8 @@ import React from "react";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Category } from "@/lib/fetchtodo";
+import { Category } from "@/lib/todo/fetchtodo";
+import { UpdatePayload } from "@/lib/todo/updatetodo";
 
 export interface Todo {
   id: number;
@@ -14,7 +15,7 @@ export interface Todo {
 
 interface TodoDatacardContextProps {
   todos: Todo[];
-  onCheck: (id: number) => void;
+  onCheck: (id: number, updates: UpdatePayload) => void | Promise<void>;
   onDelete: (id: number) => void;
 }
 
@@ -48,7 +49,17 @@ const TodoDatacardContext: React.FC<TodoDatacardContextProps> = ({ todos, onChec
           </CardContent>
         </div>
         <div>
-          <Button variant="default" onClick={() => onCheck(todo.id)}>
+          <Button
+            variant="default"
+            onClick={() =>
+              onCheck(todo.id, {
+                title: todo.title,
+                description: todo.description,
+                category: todo.category,
+                completed: !todo.completed,
+              })
+            }
+          >
             Update Task
           </Button>
           <Button

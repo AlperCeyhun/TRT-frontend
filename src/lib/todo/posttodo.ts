@@ -1,4 +1,4 @@
-import { Category } from "@/lib/fetchtodo";
+import { Category } from "@/lib/todo/fetchtodo";
 
 export async function posttodo(newTodo: { title: string; description: string; category: Category; completed?: boolean }) {
   const res = await fetch("http://localhost:5195/api/todo-tasks", {
@@ -6,7 +6,6 @@ export async function posttodo(newTodo: { title: string; description: string; ca
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       ...newTodo,
-      userId: 1,
     }),
   });
 

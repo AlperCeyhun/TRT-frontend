@@ -6,7 +6,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Check, ChevronsUpDown, Plus } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { cn } from "@/lib/utils";
-import { Category } from "@/lib/fetchtodo";
+import { Category } from "@/lib/todo/fetchtodo";
 
 interface AddTaskSheetProps {
   newTitle: string;
@@ -21,7 +21,7 @@ const categoryOptions = [
   { label: "Normal", value: Category.Normal },
   { label: "Düşük Öncelik", value: Category.DusukOncelik },
 ];
-
+  
 export function AddTaskSheet({
   newTitle,
   newDescription,
@@ -132,7 +132,7 @@ export function AddTaskSheet({
               variant="default"
               className="bg-black ml-2 mr-2 mt-8"
               onClick={() => handleAddTask(category)}
-              disabled={!newTitle.trim() && !newDescription.trim()}>
+              disabled={!newTitle.trim() || !newDescription.trim() || !category}>
               Add Task
             </Button>
           </SheetClose>
