@@ -32,13 +32,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { Category } from "@/lib/todo/fetchtodo";
 
 export type Todo = {
   userId: number;
   id: number;
   title: string;
+  description: string;
+  category: Category
   completed: boolean;
 };
+
 
 type TodoDataTableProps = {
   todos: Todo[];
@@ -92,6 +96,32 @@ export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
       cell: ({ row }) => (
         <div>{row.getValue("completed") ? "✅" : "❌"}</div>
       ),
+    },
+  {
+    accessorKey: "description",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Description
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
+    cell: ({ row }) => <div>{row.getValue("description")}</div>,
+  },
+    {
+      accessorKey: "category",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Category
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => <div className="capitalize">{row.getValue("category")}</div>,
     },
     {
       id: "actions",
