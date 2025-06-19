@@ -19,11 +19,17 @@ const LoginPage = () => {
     console.log("Logging in with:", email, password);
   };
 
+  const handleRegister = (e: React.MouseEvent) => {
+    e.preventDefault();
+    router.push("/register");
+    console.log("Redirecting to register page");
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <Card className="w-full max-w-sm p-6 shadow-lg">
         <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800 dark:text-gray-100">
-          Login
+          TODO
         </h2>
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
@@ -51,10 +57,12 @@ const LoginPage = () => {
               required
             />
           </div>
-
           <Button type="submit" className="w-full">
             Sign In
           </Button>
+          <p>Dont have an account?
+            <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500 px-2 hover:underline" onClick={handleRegister}>Sign up</a>
+          </p>
         </form>
       </Card>
     </div>
