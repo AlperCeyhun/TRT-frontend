@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Category } from "@/lib/todo/fetchtodo";
 import { UpdatePayload } from "@/lib/todo/updatetodo";
+import TodoUpdateTaskSheet from "@/components/TodoUpdateTaskSheet";
 
 export interface Todo {
   id: number;
@@ -49,19 +50,7 @@ const TodoDatacardContext: React.FC<TodoDatacardContextProps> = ({ todos, onChec
           </CardContent>
         </div>
         <div>
-          <Button
-            variant="default"
-            onClick={() =>
-              onCheck(todo.id, {
-                title: todo.title,
-                description: todo.description,
-                category: todo.category,
-                completed: !todo.completed,
-              })
-            }
-          >
-            Update Task
-          </Button>
+          <TodoUpdateTaskSheet todo={todo} onUpdate={onCheck} />
           <Button
             variant="outline"
             className="ml-2 bg-red-600 text-white"
