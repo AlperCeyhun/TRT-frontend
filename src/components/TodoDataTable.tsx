@@ -33,6 +33,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 import { Category } from "@/lib/todo/fetchtodo";
+import { MarkCompleteDropdownItem } from "./TodoMarkComplete";
+
 
 export type Todo = {
   userId: number;
@@ -120,13 +122,7 @@ export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
                 Copy Title
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => {
-                  // add markcomplete .ts functionality here
-                  console.log(`Marking todo ${todo.id} as complete`);
-                }}>
-                Mark Complete
-              </DropdownMenuItem>
+              <MarkCompleteDropdownItem todo={todo}/>
             </DropdownMenuContent>
           </DropdownMenu>
         );
