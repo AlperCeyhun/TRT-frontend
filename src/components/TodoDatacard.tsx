@@ -7,7 +7,7 @@ import { Category } from '@/lib/todo/fetchtodo';
 import { loadTodos } from "@/lib/todo/loadtodo";
 import { deleteTodo } from '@/lib/todo/deletetodo';
 import { updateTodo, UpdatePayload } from "@/lib/todo/updatetodo";
-import { posttodo } from '@/lib/todo/posttodo';
+import { addTask } from "@/lib/todo/addTask";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -41,22 +41,15 @@ const Todos: React.FC = () => {
     }
   };
 
-  const handleAddTask = async (category: Category | null) => {
-    if (!newTitle.trim() || category === null) return;
-    try {
-      const created = await posttodo({ title: newTitle, description: newDescription, category: category, completed: false });
-      //dummy userId
-      const fullTodo: Todo = {
-        ...created,
-        userId: 1,
-        description: newDescription || "",
-        category: category,
-      };
-      setTodos((prev) => [fullTodo, ...prev]);
-      setNewTitle("");
-    } catch (error) {
-      setError("Failed to add task");
-    }
+  const handleAddTask = (category: Category | null) => {
+    addTask({
+      newTitle,
+      newDescription,
+      category,
+      setTodos,
+      setNewTitle,
+      setError,
+    });
   };
 
 

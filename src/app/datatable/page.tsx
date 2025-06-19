@@ -6,6 +6,7 @@ import TodoDatacardTop from "@/components/TodoDatacardTop";
 import { TodoDataTable } from "@/components/TodoDataTable";
 import { loadTodos } from "@/lib/todo/loadtodo";
 import { Category } from "@/lib/todo/fetchtodo";
+import { addTask } from "@/lib/todo/addTask";
 
 export type Todo = {
   userId: number
@@ -29,20 +30,14 @@ export default function Home() {
   
   
   const handleAddTask = (category: Category | null) => {
-    if (!newTitle.trim() || !newDescription.trim() || !category) return;
-
-    const created: Todo = {
-      id: Math.floor(Math.random() * 10000),
-      title: newTitle,
-      completed: false,
-      userId: 1,
-      description: newDescription,
-      category: category, // assuming backend expects this
-    };
-
-    setTodos((prev) => [created, ...prev]);
-    setNewTitle("");
-    setNewDescription("");
+    addTask({
+      newTitle,
+      newDescription,
+      category,
+      setTodos,
+      setNewTitle,
+      setError,
+    });
   };
 
   useEffect(() => {
