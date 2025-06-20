@@ -1,5 +1,5 @@
 export async function getAssignedUsers(taskId: number): Promise<number[]> {
-  const res = await fetch(`http://localhost:5195/api/assignees/user/${taskId}`, {
+  const res = await fetch(`http://localhost:5195/api/assignees/task/${taskId}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
