@@ -9,7 +9,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { postRegister } from "@/lib/register/postregister";
+import { postRegister } from "@/lib/user/postregister";
 import { toast } from "sonner";
 
 const registerSchema = yup.object({
