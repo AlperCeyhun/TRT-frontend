@@ -4,12 +4,11 @@ export type RegisterData = {
 };
 
 export type RegisterResponse = {
-  id: number;
-  username: string;
+  response: string;
 };
 
 export async function postRegister(registerData: RegisterData): Promise<RegisterResponse> {
-  const res = await fetch("", {
+  const res = await fetch("http://localhost:5195/api/users/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -21,10 +20,8 @@ export async function postRegister(registerData: RegisterData): Promise<Register
     throw new Error(`Failed to register. Status: ${res.status}`);
   }
 
-  const data = await res.json();
-
+  const text = await res.text();
   return {
-    id: data.id,
-    username: data.username,
+    response: text,
   };
 }
