@@ -1,6 +1,7 @@
 import { Category } from "@/lib/todo/fetchtodo";
 import { updateTodo, UpdatePayload } from "@/lib/todo/updatetodo";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { Assignee } from "./TodoDataTable";
 
 interface Props {
   todo: {
@@ -8,9 +9,10 @@ interface Props {
     title: string;
     description: string;
     category: Category;
-    completed: boolean;
+    completed: boolean
+    assigned: Assignee[];
   };
-  onUpdated?: () => void; // Optional callback to refresh list/UI
+  onUpdated?: () => void;
 }
 
 export function MarkCompleteDropdownItem({ todo, onUpdated }: Props) {
@@ -21,6 +23,7 @@ export function MarkCompleteDropdownItem({ todo, onUpdated }: Props) {
         description: todo.description,
         category: todo.category,
         completed: !todo.completed,
+        assigned: todo.assigned
       };
       await updateTodo(todo.id, updates);
       console.log(`Marked todo ${todo.id} as complete`);

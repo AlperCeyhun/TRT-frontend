@@ -1,3 +1,5 @@
+import { Assignee } from "@/components/TodoDataTable";
+
 export enum Category {
   Acil = "Acil",
   Normal = "Normal",
@@ -11,6 +13,7 @@ export type Todo = {
   description: string;
   category: Category;
   completed: boolean;
+  assigned?: Assignee[];
 };
 
 export async function fetchTodos(): Promise<Todo[]> {

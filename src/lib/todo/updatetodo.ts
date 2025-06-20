@@ -1,10 +1,12 @@
 import { Category } from "@/lib/todo/fetchtodo";
+import { Assignee } from "@/components/TodoDataTable";
 
 export type UpdatePayload = {
   title: string;
   description: string;
   category: Category;
   completed: boolean;
+  assigned?: Assignee[];
 };
 
 export async function updateTodo(id: number, updates: UpdatePayload) {

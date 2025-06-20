@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -34,27 +33,54 @@ import {
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 import { Category } from "@/lib/todo/fetchtodo";
 import { MarkCompleteDropdownItem } from "./TodoMarkComplete";
+import { getUsers, User } from "@/lib/user/getusers";
 
+export type Assignee = {
+  userId: number;
+  username: string;
+};
 
 export type Todo = {
-  userId: number;
+  userId?: number;
   id: number;
   title: string;
   description: string;
-  category: Category
+  category: Category;
   completed: boolean;
+  assigned: Assignee[];
 };
-
 
 type TodoDataTableProps = {
   todos: Todo[];
 };
 
 export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
+  const [users, setUsers] = React.useState<User[]>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const allUsers = await getUsers();
+        setUsers(allUsers);
+        console.log(allUsers);
+      } catch (err) {
+        console.error("Failed to fetch users:", err);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+  useEffect(() => {
+    console.log("Users state updated:", users);
+  }, [users]);
+  console.log("Todos:", todos);
+  const getUsernamesFromAssignees = (assignees: Assignee[] = []) => {
+    return assignees.map((a) => a.username).join(", ");
+  };
 
   const columns: ColumnDef<Todo>[] = [
     {
@@ -77,19 +103,19 @@ export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
         <div>{row.getValue("completed") ? "✅" : "❌"}</div>
       ),
     },
-  {
-    accessorKey: "description",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        Description
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
-    cell: ({ row }) => <div>{row.getValue("description")}</div>,
-  },
+    {
+      accessorKey: "description",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Description
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => <div>{row.getValue("description")}</div>,
+    },
     {
       accessorKey: "category",
       header: ({ column }) => (
@@ -102,6 +128,15 @@ export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
         </Button>
       ),
       cell: ({ row }) => <div className="capitalize">{row.getValue("category")}</div>,
+    },
+    {
+      accessorKey: "assignees",
+      header: "Assigned To",
+      cell: ({ row }) => {
+        const assignees = row.getValue("assignees") as Assignee[];
+        const names = getUsernamesFromAssignees(assignees);
+        return <div>{names || "None"}</div>;
+      },
     },
     {
       id: "actions",
@@ -122,7 +157,7 @@ export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
                 Copy Title
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <MarkCompleteDropdownItem todo={todo}/>
+              <MarkCompleteDropdownItem todo={todo} />
             </DropdownMenuContent>
           </DropdownMenu>
         );
