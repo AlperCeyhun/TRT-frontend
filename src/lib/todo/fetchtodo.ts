@@ -13,7 +13,7 @@ export type Todo = {
   description: string;
   category: Category;
   completed: boolean;
-  assigned?: Assignee[];
+  assignees?: Assignee[];
 };
 
 export async function fetchTodos(): Promise<Todo[]> {

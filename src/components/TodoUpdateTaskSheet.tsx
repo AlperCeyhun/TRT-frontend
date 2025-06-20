@@ -2,13 +2,21 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetFooter,
+} from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Command, CommandItem } from "@/components/ui/command";
 import { ChevronsUpDown, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Assignee } from "./TodoDataTable";
 
 enum Category {
   Acil = "Acil",
@@ -23,7 +31,9 @@ interface TodoUpdateTaskSheetProps {
     description: string;
     category: Category;
     completed: boolean;
+    assignees: Assignee[];
   };
+  allAssignees: Assignee[];
   onUpdate: (
     id: number,
     updates: {
@@ -31,6 +41,7 @@ interface TodoUpdateTaskSheetProps {
       description: string;
       category: Category;
       completed: boolean;
+      assignees: Assignee[];
     }
   ) => void | Promise<void>;
 }
@@ -41,19 +52,34 @@ const categoryOptions = [
   { label: "Düşük Öncelik", value: Category.DusukOncelik },
 ];
 
-export function TodoUpdateTaskSheet({ todo, onUpdate }: TodoUpdateTaskSheetProps) {
+export function TodoUpdateTaskSheet({ todo, onUpdate, allAssignees }: TodoUpdateTaskSheetProps) {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
+  const [assigneePopoverOpen, setAssigneePopoverOpen] = useState(false);
 
-  // Local states for editing fields
   const [title, setTitle] = useState(todo.title);
   const [description, setDescription] = useState(todo.description);
   const [category, setCategory] = useState<Category>(todo.category);
   const [completed, setCompleted] = useState<boolean>(todo.completed);
+  const [selectedAssignees, setSelectedAssignees] = useState<Assignee[]>(todo.assignees || []);
+
+  const toggleAssignee = (user: Assignee) => {
+    if (selectedAssignees.find((a) => a.userId === user.userId)) {
+      setSelectedAssignees((prev) => prev.filter((a) => a.userId !== user.userId));
+    } else {
+      setSelectedAssignees((prev) => [...prev, user]);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onUpdate(todo.id, { title, description, category, completed });
+    await onUpdate(todo.id, {
+      title,
+      description,
+      category,
+      completed,
+      assignees: selectedAssignees,
+    });
     setSheetOpen(false);
   };
 
@@ -88,6 +114,7 @@ export function TodoUpdateTaskSheet({ todo, onUpdate }: TodoUpdateTaskSheetProps
               className="mt-1"
             />
           </div>
+
           <div>
             <Label>Category</Label>
             <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
@@ -116,10 +143,7 @@ export function TodoUpdateTaskSheet({ todo, onUpdate }: TodoUpdateTaskSheetProps
                     >
                       {opt.label}
                       <Check
-                        className={cn(
-                          "ml-auto h-4 w-4",
-                          category === opt.value ? "opacity-100" : "opacity-0"
-                        )}
+                        className={cn("ml-auto h-4 w-4", category === opt.value ? "opacity-100" : "opacity-0")}
                       />
                     </CommandItem>
                   ))}
@@ -127,6 +151,34 @@ export function TodoUpdateTaskSheet({ todo, onUpdate }: TodoUpdateTaskSheetProps
               </PopoverContent>
             </Popover>
           </div>
+
+          <div>
+            <Label>Assignees</Label>
+            <Popover open={assigneePopoverOpen} onOpenChange={setAssigneePopoverOpen}>
+              <PopoverTrigger asChild>
+                <Button variant="outline" className="w-full justify-between">
+                  {selectedAssignees.length > 0
+                    ? selectedAssignees.map((a) => a.username).join(", ")
+                    : "Select assignees"}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="p-0">
+                <Command>
+                  {allAssignees.map((user) => {
+                    const isSelected = selectedAssignees.some((a) => a.userId === user.userId);
+                    return (
+                      <CommandItem key={user.userId} onSelect={() => toggleAssignee(user)}>
+                        {user.username}
+                        <Check className={cn("ml-auto h-4 w-4", isSelected ? "opacity-100" : "opacity-0")} />
+                      </CommandItem>
+                    );
+                  })}
+                </Command>
+              </PopoverContent>
+            </Popover>
+          </div>
+
           <div className="flex items-center space-x-2">
             <input
               id="completed"
@@ -136,6 +188,7 @@ export function TodoUpdateTaskSheet({ todo, onUpdate }: TodoUpdateTaskSheetProps
             />
             <Label htmlFor="completed">Completed</Label>
           </div>
+
           <SheetFooter>
             <Button type="submit" variant="default">
               Save

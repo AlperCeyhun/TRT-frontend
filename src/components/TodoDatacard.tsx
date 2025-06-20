@@ -8,6 +8,7 @@ import { loadTodos } from "@/lib/todo/loadtodo";
 import { deleteTodo } from '@/lib/todo/deletetodo';
 import { updateTodo, UpdatePayload } from "@/lib/todo/updatetodo";
 import { addTask } from "@/lib/todo/addTask";
+import { Assignee } from '@/components/TodoDataTable';
 
 const ITEMS_PER_PAGE = 5;
 
@@ -18,6 +19,13 @@ const Todos: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [newTitle, setNewTitle] = useState<string>("");
   const [newDescription, setNewDescription] = useState<string>("");
+
+  //Example
+  const [allAssignees] = useState<Assignee[]>([
+    { userId: 1, username: "saul" },
+    { userId: 2, username: "hey" },
+    { userId: 3, username: "mari" },
+  ]);
 
   const totalPages = Math.ceil(todos.length / ITEMS_PER_PAGE);
 
@@ -52,7 +60,6 @@ const Todos: React.FC = () => {
     });
   };
 
-
   useEffect(() => {
     loadTodos(setTodos, setError, setLoading);
   }, []);
@@ -65,13 +72,31 @@ const Todos: React.FC = () => {
   return (
     <div className="space-y-4">
       <div className='flex items-center justify-between mb-4'>
-        <TodoDatacardTop newTitle={newTitle} setNewTitle={setNewTitle} newDescription={newDescription} setNewDescription={setNewDescription} handleAddTask={handleAddTask}/>
+        <TodoDatacardTop
+          newTitle={newTitle}
+          setNewTitle={setNewTitle}
+          newDescription={newDescription}
+          setNewDescription={setNewDescription}
+          handleAddTask={handleAddTask}
+        />
       </div>
       <div className="space-y-1">
-        <TodoDatacardContext todos={paginatedTodos} onCheck={HandleUpdate} onDelete={HandleDelete}/>
+      <TodoDatacardContext
+        todos={paginatedTodos.map((t) => ({
+          ...t,
+          assignees: t.assignees ?? [],
+        }))}
+        onCheck={HandleUpdate}
+        onDelete={HandleDelete}
+        allAssignees={allAssignees}
+      />
       </div>
       <div className="mt-4 flex justify-center">
-        <TodoPagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage}/>
+        <TodoPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          setCurrentPage={setCurrentPage}
+        />
       </div>
     </div>
   );
