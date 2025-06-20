@@ -37,10 +37,11 @@ export default function RegisterPage() {
   const onSubmit = async (data: RegisterFormValues) => {
     try {
       setServerError("");
-      const { username, password } = data;
+      const username = data.username;
+      const password = data.password;
       const response = await postRegister({ username, password });
       console.log("Registered user:", response);
-      router.push("/home");
+      router.push("/datatable");
     } catch (err: any) {
       console.error("Registration error:", err);
       setServerError("Registration failed.");
