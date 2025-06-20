@@ -9,15 +9,57 @@ import React, { useState } from "react";
 
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    router.push("/home");
-    console.log("Logging in with:", email, password);
+    setErrorMessage("");
+
+    try {
+      console.log("Trying to login with username:", username);
+
+      const response = await fetch("http://localhost:5195/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      });
+
+      console.log("Response status:", response.status);
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Login successful, data:", data);
+
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+          //localStorage.setItem("userID", data.userID);
+          console.log("Token stored in localStorage:", data.token);
+          if (data.isAdmin) {
+            router.push("/admin/dashboard");
+          } else {
+            router.push("/datatable");
+          }
+        } else {
+          setErrorMessage("No token received from server.");
+        }
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(errorData.message || "Login failed. Check your username/password.");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setErrorMessage("Server connection failed. Make sure the backend is running.");
+    }
   };
+
 
   const handleRegister = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -38,8 +80,8 @@ const LoginPage = () => {
               id="useranme"
               type="useranme"
               placeholder="useranme"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="mt-1"
               required
             />
@@ -63,6 +105,7 @@ const LoginPage = () => {
           <p>Dont have an account?
             <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500 px-2 hover:underline" onClick={handleRegister}>Sign up</a>
           </p>
+          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
         </form>
       </Card>
     </div>
