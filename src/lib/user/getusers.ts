@@ -6,7 +6,7 @@ export type User = {
 };
 
 export async function getUsers(): Promise<User[]> {
-  const res = await fetch("http://localhost:5195/api/user", {
+  const res = await fetch("http://localhost:5195/api/users", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
