@@ -20,7 +20,6 @@ export type Todo = {
 export default function Home() {
   
   const router = useRouter();
-  const [newTask, setNewTask] = useState<string>("");
   const [todos, setTodos] = useState<Todo[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
