@@ -21,5 +21,5 @@ export async function fetchTodos(): Promise<Todo[]> {
   }
 
   const data: Todo[] = await res.json();
-  return data.slice(0, 14);
+  return data;
 }
