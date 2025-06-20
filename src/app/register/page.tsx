@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { postRegister } from "@/lib/register/postregister";
+import { toast } from "sonner";
 
 const registerSchema = yup.object({
   username: yup.string().required("Username is required").min(3, "Too short"),
@@ -37,10 +38,13 @@ export default function RegisterPage() {
   const onSubmit = async (data: RegisterFormValues) => {
     try {
       setServerError("");
-      const username = data.username;
-      const password = data.password;
+      const { username, password } = data;
       const response = await postRegister({ username, password });
-      console.log("Registered user:", response);
+
+      toast.success("🎉 Registration successful!", {
+        description: `Welcome aboard, ${username}!`,
+      });
+
       router.push("/datatable");
     } catch (err: any) {
       console.error("Registration error:", err);
