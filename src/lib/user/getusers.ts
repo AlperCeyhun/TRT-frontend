@@ -1,7 +1,7 @@
 export type User = {
   id: number;
   username: string;
-  assignees: any; // Adjust the type
+  assignees: number[];
 };
 
 export async function getUsers(): Promise<User[]> {
