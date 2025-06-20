@@ -1,7 +1,6 @@
 export type User = {
   id: number;
   username: string;
-  password: string;
   assignees: any; // Adjust the type
 };
 
