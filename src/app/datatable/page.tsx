@@ -3,10 +3,11 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import TodoDatacardTop from "@/components/TodoDatacardTop";
-import { TodoDataTable } from "@/components/TodoDataTable";
+import { Assignee, TodoDataTable } from "@/components/TodoDataTable";
 import { loadTodos } from "@/lib/todo/loadtodo";
 import { Category } from "@/lib/todo/fetchtodo";
 import { addTask } from "@/lib/todo/addTask";
+import TodoPagination from "@/components/TodoPagination";
 
 export type Todo = {
   userId: number
@@ -15,7 +16,11 @@ export type Todo = {
   description: string
   completed: boolean
   category: Category
+  assigned: Assignee[]
 }
+
+const ITEMS_PER_PAGE = 5;
+
 
 export default function Home() {
   
@@ -25,8 +30,10 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(true);
   const [newTitle, setNewTitle] = useState<string>("");
   const [newDescription, setNewDescription] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [pageSize, setPageSize] = useState(ITEMS_PER_PAGE);
 
-  
   
   const handleAddTask = (category: Category | null) => {
     addTask({
@@ -40,8 +47,8 @@ export default function Home() {
   };
 
   useEffect(() => {
-    loadTodos(setTodos, setError, setLoading);
-  }, []);
+    loadTodos(setTodos, setError, setLoading, setTotalCount, setCurrentPage, setPageSize, currentPage, pageSize);
+  }, [currentPage]);
 
 	return (
     <div className="items-center justify-items-center min-h-screen relative mt-8">
@@ -54,6 +61,13 @@ export default function Home() {
           isTableView={true}/>
         <div className="items-center justify-items-center mt-8 min-w-[800px]">
             <TodoDataTable todos={todos}/>
+        </div>
+        <div className="mt-4 flex justify-center">
+        <TodoPagination
+          currentPage={currentPage}
+          totalPages={totalCount}
+          setCurrentPage={setCurrentPage}
+        />
         </div>
     </div>
   );

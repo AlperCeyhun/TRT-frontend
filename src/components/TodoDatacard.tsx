@@ -10,8 +10,8 @@ import { updateTodo, UpdatePayload } from "@/lib/todo/updatetodo";
 import { addTask } from "@/lib/todo/addTask";
 import { Assignee } from '@/components/TodoDataTable';
 import { getUsers, User } from '@/lib/user/getusers';
-import { postAssign } from "@/lib/assignees/postassign"; // ✅ add this
-import { deleteAssign } from "@/lib/assignees/deleteAssign"; // ✅ add this
+import { postAssign } from "@/lib/assignees/postassign";
+import { deleteAssign } from "@/lib/assignees/deleteAssign";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -23,23 +23,21 @@ const Todos: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [newTitle, setNewTitle] = useState<string>("");
   const [newDescription, setNewDescription] = useState<string>("");
-
-  const totalPages = Math.ceil(todos.length / ITEMS_PER_PAGE);
+  const [totalCount, setTotalCount] = useState(1);
+  const [pageSize, setPageSize] = useState(ITEMS_PER_PAGE);
 
   const HandleUpdate = async (id: number, updates: UpdatePayload) => {
     try {
       const oldTodo = todos.find((t) => t.id === id);
       if (!oldTodo) return;
 
-      // 🧠 Handle assignees diff if provided
       if ('assignees' in updates) {
-        const oldIds = (oldTodo.assignees ?? []).map((a) => a.userId);
+        const oldIds = (oldTodo.assigned ?? []).map((a) => a.userId);
         const newIds = updates.assignees?.map((a) => a.userId) ?? [];
 
         const added = newIds.filter((id) => !oldIds.includes(id));
         const removed = oldIds.filter((id) => !newIds.includes(id));
 
-        // 🛠 API calls for changes
         for (const userId of added) {
           await postAssign(id, [userId]);
         }
@@ -55,7 +53,7 @@ const Todos: React.FC = () => {
         t.id === id ? {
           ...t,
           ...updates,
-          assignees: 'assignees' in updates ? updates.assignees! : t.assignees,
+          assignees: 'assignees' in updates ? updates.assignees! : t.assigned,
         } : t
       ));
     } catch (error) {
@@ -84,8 +82,8 @@ const Todos: React.FC = () => {
   };
 
   useEffect(() => {
-    loadTodos(setTodos, setError, setLoading);
-  }, []);
+    loadTodos(setTodos, setError, setLoading, setTotalCount, setCurrentPage, setPageSize, currentPage, pageSize);
+  }, [currentPage]); 
 
   useEffect(() => {
     getUsers()
@@ -102,11 +100,6 @@ const Todos: React.FC = () => {
       });
   }, []);
 
-  const paginatedTodos = todos.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
-
   return (
     <div className="space-y-4">
       <div className='flex items-center justify-between mb-4'>
@@ -120,9 +113,9 @@ const Todos: React.FC = () => {
       </div>
       <div className="space-y-1">
         <TodoDatacardContext
-          todos={paginatedTodos.map((t) => ({
+          todos={todos.map((t) => ({
             ...t,
-            assignees: t.assignees ?? [],
+            assignees: t.assigned ?? [],
           }))}
           onCheck={HandleUpdate}
           onDelete={HandleDelete}
@@ -132,7 +125,7 @@ const Todos: React.FC = () => {
       <div className="mt-4 flex justify-center">
         <TodoPagination
           currentPage={currentPage}
-          totalPages={totalPages}
+          totalPages={totalCount}
           setCurrentPage={setCurrentPage}
         />
       </div>

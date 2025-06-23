@@ -13,16 +13,26 @@ export type Todo = {
   description: string;
   category: Category;
   completed: boolean;
-  assignees?: Assignee[];
+  assigned: Assignee[];
 };
 
-export async function fetchTodos(): Promise<Todo[]> {
-  const res = await fetch('http://localhost:5195/api/todo-tasks');
+type TodoApiResponse = {
+  data: Todo[];
+  totalCount: number;
+  pageNumber: number;
+  pageSize: number;
+};
+
+export async function fetchTodos(
+  pageNumber = 1,
+  pageSize = 5
+): Promise<TodoApiResponse> {
+  const res = await fetch(`http://localhost:5195/api/todo-tasks?pageNumber=${pageNumber}&pageSize=${pageSize}`);
 
   if (!res.ok) {
     throw new Error(`Failed to fetch todos. Status: ${res.status}`);
   }
 
-  const data: Todo[] = await res.json();
-  return data;
+  const json: TodoApiResponse = await res.json();
+  return json;
 }
