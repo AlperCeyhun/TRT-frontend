@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,22 +22,23 @@ export const metadata: Metadata = {
   description: "Generated without consent",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black font-[family-name:var(--font-geist-sans)]`}>
-        <nav className="flex items-center justify-between p-4 bg-white text-black overflow-hidden">
-          <h1 className="truncate text-lg font-bold">TODO LIST APP</h1>
-        </nav>
-        {children}
-        <Toaster richColors position="bottom-right" />
-        <footer className="text-center text-white mt-auto">
-           <p>&copy; {new Date().getFullYear()} TRT todo app. All rights reserved.</p>
-        </footer>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <Header/>
+          {children}
+          <Toaster richColors position="bottom-right" />
+          <Footer />
+        </NextIntlClientProvider>
       </body>
     </html>
   );
