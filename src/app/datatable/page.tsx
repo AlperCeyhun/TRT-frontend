@@ -19,7 +19,7 @@ export type Todo = {
   assigned: Assignee[]
 }
 
-const ITEMS_PER_PAGE = 5;
+const ITEMS_PER_PAGE = 10;
 
 
 export default function Home() {
