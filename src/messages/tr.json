@@ -1,0 +1,67 @@
+{
+  "login": {
+    "title": "TODO",
+    "username_title": "kullanıcı adı",
+    "username_prompt": "kullanıcı adı",
+    "password_title": "şifre",
+    "sign_in_title": "Giriş Yap",
+    "register_message": "Hesabın yok mu?",
+    "sign_up_title": "Kayıt Ol"
+  },
+  "register": {
+    "title": "Kayıt Ol",
+    "username_title": "kullanıcı adı",
+    "username_prompt": "kullanıcı adını gir.",
+    "password_title": "şifre",
+    "password_prompt": "bir şifre oluştur.",
+    "confirm_password_title": "Şifreyi Onayla",
+    "confirm_password_prompt": "Şifreni tekrar gir.",
+    "sign_up_title": "Kayıt Ol",
+    "sign_up_title_progress": "Yükleniyor...",
+    "login_message": "Zaten hesabın var mı?",
+    "sign_in_title": "Giriş Yap"
+  },
+  "datatable": {
+    "table_title": "başlık",
+    "table_completed": "tamamlandı",
+    "table_description": "açıklama",
+    "table_category": "kategori",
+    "table_assigned_to": "atanan",
+    "button_edit_view": "Düzenleme Görünümüne Git",
+    "button_add_task": "Görev Ekle",
+    "button_columns": "Sütunlar",
+    "button_columns_accessorkey": "atananlar",
+    "table_actions": "Eylemler",
+    "message_no_task": "Görev bulunamadı.",
+    "actions_mark": "Tamamlandı olarak işaretle",
+    "actions_unmark": "Tamamlanmadı olarak işaretle",
+    "table_assigned_to_none": "Yok"
+  },
+  "datacard": {
+
+  },
+  "add_sheet": {
+    "sheet_title": "Yeni Görev Ekle",
+    "sheet_description": "Yeni görev detaylarını buraya yaz!",
+    "task_title": "Başlık",
+    "task_title_prompt": "örn. Grafted Scion'u yen",
+    "task_description": "Açıklama",
+    "task_description_prompt": "örn. Hırslarını dine koy.",
+    "input_limit_message": "karakter",
+    "task_category": "Kategori",
+    "dropdown_title": "Kategori Seç",
+    "dropdown_search_prompt": "Kategori ara...",
+    "button_add_task": "Görev Ekle"
+  },
+  "edit_sheet": {
+
+  },
+  "pagination": {
+    "previous": "Önceki",
+    "next": "Sonraki"
+  },
+  "layout": {
+    "footer_content": "TRT TODO uygulaması. Tüm hakları saklıdır.",
+    "title": "TODO LİSTESİ UYGULAMASI"
+  }
+}
