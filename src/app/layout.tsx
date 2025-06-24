@@ -6,6 +6,8 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getLocale, getMessages } from 'next-intl/server';
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { ChatIconButton } from "@/components/chat/chatIconButton";
+import { Send } from "lucide-react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,6 +39,9 @@ export default async function RootLayout({
           <Header/>
           {children}
           <Toaster richColors position="bottom-right" />
+          <div className="fixed bottom-4 right-4 z-50">
+            <ChatIconButton icon={Send} ariaLabel="Open chat" />
+          </div>
           <Footer />
         </NextIntlClientProvider>
       </body>
