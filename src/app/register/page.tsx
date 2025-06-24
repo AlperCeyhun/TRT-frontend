@@ -28,7 +28,7 @@ type RegisterFormValues = yup.InferType<typeof registerSchema>;
 export default function RegisterPage() {
   const router = useRouter();
   const [serverError, setServerError] = useState("");
-  const t = useTranslations('login');
+  const t = useTranslations('register');
 
   const {
     register,
