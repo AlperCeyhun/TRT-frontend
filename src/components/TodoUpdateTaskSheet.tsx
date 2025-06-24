@@ -17,6 +17,7 @@ import { Command, CommandItem } from "@/components/ui/command";
 import { ChevronsUpDown, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Assignee } from "./TodoDataTable";
+import {useTranslations} from 'next-intl';
 
 enum Category {
   Acil = "Acil",
@@ -56,12 +57,12 @@ export function TodoUpdateTaskSheet({ todo, onUpdate, allAssignees }: TodoUpdate
   const [sheetOpen, setSheetOpen] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [assigneePopoverOpen, setAssigneePopoverOpen] = useState(false);
-
   const [title, setTitle] = useState(todo.title);
   const [description, setDescription] = useState(todo.description);
   const [category, setCategory] = useState<Category>(todo.category);
   const [completed, setCompleted] = useState<boolean>(todo.completed);
   const [selectedAssignees, setSelectedAssignees] = useState<Assignee[]>(todo.assignees || []);
+  const t = useTranslations('edit_sheet');
 
   const toggleAssignee = (user: Assignee) => {
     if (selectedAssignees.find((a) => a.userId === user.userId)) {
@@ -87,16 +88,16 @@ export function TodoUpdateTaskSheet({ todo, onUpdate, allAssignees }: TodoUpdate
     <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
       <SheetTrigger asChild>
         <Button variant="outline" size="sm">
-          Edit
+          {t("button_edit")}
         </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Edit Task</SheetTitle>
+          <SheetTitle>{t("sheet_title")}</SheetTitle>
         </SheetHeader>
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <div>
-            <Label htmlFor="title">Title</Label>
+            <Label htmlFor="title">{t("task_title")}</Label>
             <Input
               id="title"
               value={title}
@@ -106,7 +107,7 @@ export function TodoUpdateTaskSheet({ todo, onUpdate, allAssignees }: TodoUpdate
             />
           </div>
           <div>
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">{t("task_description")}</Label>
             <Input
               id="description"
               value={description}
@@ -116,7 +117,7 @@ export function TodoUpdateTaskSheet({ todo, onUpdate, allAssignees }: TodoUpdate
           </div>
 
           <div>
-            <Label>Category</Label>
+            <Label>{t("task_category")}</Label>
             <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
               <PopoverTrigger asChild>
                 <Button
@@ -126,7 +127,7 @@ export function TodoUpdateTaskSheet({ todo, onUpdate, allAssignees }: TodoUpdate
                   className="justify-between w-full"
                   type="button"
                 >
-                  {categoryOptions.find((opt) => opt.value === category)?.label ?? "Select category"}
+                  {categoryOptions.find((opt) => opt.value === category)?.label ?? t("dropdown_title")}
                   <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
                 </Button>
               </PopoverTrigger>
@@ -153,13 +154,13 @@ export function TodoUpdateTaskSheet({ todo, onUpdate, allAssignees }: TodoUpdate
           </div>
 
           <div>
-            <Label>Assignees</Label>
+            <Label>{t("task_assignees")}</Label>
             <Popover open={assigneePopoverOpen} onOpenChange={setAssigneePopoverOpen}>
               <PopoverTrigger asChild>
                 <Button variant="outline" className="w-full justify-between">
                   {selectedAssignees.length > 0
                     ? selectedAssignees.map((a) => a.username).join(", ")
-                    : "Select assignees"}
+                    : t("task_assignees_title")}
                   <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
                 </Button>
               </PopoverTrigger>

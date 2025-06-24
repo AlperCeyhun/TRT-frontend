@@ -5,6 +5,7 @@ import { AddTaskSheet } from '@/components/TodoAddTaskSheet';
 import { Category } from "@/lib/todo/fetchtodo";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import {useTranslations} from 'next-intl';
 
 interface TodoDatacardTopProps {
   newTitle: string;
@@ -24,6 +25,7 @@ const TodoDatacardTop: React.FC<TodoDatacardTopProps> = ({
   isTableView = false,
 }) => {
   const router = useRouter();
+  const t = useTranslations('pgtop');
 
   const handleSwitchView = () => {
     router.push(isTableView ? "/datacard" : "/datatable");
@@ -31,12 +33,12 @@ const TodoDatacardTop: React.FC<TodoDatacardTopProps> = ({
 
   return (
     <div className="mb-4 flex flex-row items-center justify-between w-[800px]">
-      <h2 className="text-xl font-bold text-white">📝To-do List</h2>
+      <h2 className="text-xl font-bold text-white">{t("title")}</h2>
       <div className="flex items-center space-x-2 mt-2">
         <div className="flex items-center space-x-2">
           <Button onClick={handleSwitchView} variant={"outline"}>
             <span className="text-sm font-semibold">
-              {isTableView ? "Go Edit View" : "Go Table View"}
+              {isTableView ? t("button_view_table") : t("button_view_card")}
             </span>
           </Button>
           <AddTaskSheet

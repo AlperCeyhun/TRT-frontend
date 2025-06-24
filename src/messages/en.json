@@ -1,67 +1,84 @@
 {
-    "login": {
-        "title": "TODO",
-        "username_title": "username",
-        "username_prompt": "username",
-        "password_title": "password",
-        "sign_in_title": "Sign In",
-        "register_message": "Don't have an account?",
-        "sign_up_title": "Sign Up"
-    },
-    "register": {
-        "title": "Register",
-        "username_title": "username",
-        "username_prompt": "your username here.",
-        "password_title": "password",
-        "password_prompt": "create a password.",
-        "confirm_password_title": "Confirm Password",
-        "confirm_password_prompt": "Repeat your password.",
-        "sign_up_title": "Sign Up",
-        "sign_up_title_progress": "Signing Up...",
-        "login_message": "Already have an account?",
-        "sign_in_title":"Sign In"
-    },
-    "datatable": {
-        "table_title": "title",
-        "table_completed": "completed",
-        "table_description": "description",
-        "table_category": "category",
-        "table_assigned_to": "assigned to",
-        "button_edit_view": "Go Edit View",
-        "button_add_task": "Add Task",
-        "button_columns": "Columns",
-        "button_columns_accessorkey": "assignees",
-        "table_actions": "Actions",
-        "message_no_task": "No tasks found.",
-        "actions_mark": "Mark complete",
-        "actions_unmark": "Mark incomplete",
-        "table_assigned_to_none": "None"
-    },
-    "datacard": {
-        
-    },
-    "add_sheet": {
-        "sheet_title": "Add New Task",
-        "sheet_description": "Write your new task details here!",
-        "task_title": "Title",
-        "task_title_prompt": "e.g. Defeat the Grafted Scion",
-        "task_description": "Description",
-        "task_description_prompt": "e.g. Put thy ambitions to rest.",
-        "input_limit_message": "characters",
-        "task_category": "Category",
-        "dropdown_title": "Select Category",
-        "dropdown_search_prompt": "Search category...",
-        "button_add_task": "Add Task"
-    },
-    "edit_sheet": {
-
-    },
-    "pagination": {
-        "previous": "Previous",
-        "next": "Next"
-    },
-    "layout": {
-        "footer_content": "TRT todo app. All rights reserved.",
-        "title": "TODO LIST APP"
-    }
+	"login": {
+		"title": "TODO",
+		"username_title": "username",
+		"username_prompt": "username",
+		"password_title": "password",
+		"sign_in_title": "Sign In",
+		"register_message": "Don't have an account?",
+		"sign_up_title": "Sign Up"
+	},
+	"register": {
+		"title": "Register",
+		"username_title": "username",
+		"username_prompt": "your username here.",
+		"password_title": "password",
+		"password_prompt": "create a password.",
+		"confirm_password_title": "Confirm Password",
+		"confirm_password_prompt": "Repeat your password.",
+		"sign_up_title": "Sign Up",
+		"sign_up_title_progress": "Signing Up...",
+		"login_message": "Already have an account?",
+		"sign_in_title": "Sign In"
+	},
+	"datatable": {
+		"table_title": "title",
+		"table_completed": "completed",
+		"table_description": "description",
+		"table_category": "category",
+		"table_assigned_to": "assigned to",
+		"search_prompt": "Filter titles...",
+		"button_columns": "Columns",
+		"button_columns_accessorkey": "assignees",
+		"table_actions": "Actions",
+		"actions_copy": "Copy Title",
+		"message_no_task": "No tasks found.",
+		"actions_mark": "Mark complete",
+		"actions_unmark": "Mark incomplete",
+		"table_assigned_to_none": "None"
+	},
+	"datacard": {
+		"badge_true": "Completed",
+		"badge_false": "Incomplete",
+		"assigned_to": "Assigned To:",
+		"button_delete": "Delete Task"
+	},
+	"pgtop": {
+		"title": "📝To-do List",
+		"button_view_table": "Go Edit View",
+		"button_view_card": "Go Table View"
+	},
+	"add_sheet": {
+		"button_add": "Add Task",
+		"sheet_title": "Add New Task",
+		"sheet_description": "Write your new task details here!",
+		"task_title": "Title",
+		"task_title_prompt": "e.g. Defeat the Grafted Scion",
+		"task_description": "Description",
+		"task_description_prompt": "e.g. Put thy ambitions to rest.",
+		"task_category": "Category",
+		"dropdown_title": "Select Category",
+		"dropdown_search_prompt": "Search category...",
+		"dropdown_empty": "No category found.",
+		"button_add_task": "Add Task",
+		"max_character_prompt": "characters"
+	},
+	"edit_sheet": {
+		"button_edit": "edit",
+		"sheet_title": "Edit Task",
+		"task_title": "Title",
+		"task_description": "Description",
+		"task_category": "Category",
+		"dropdown_title": "Select Category",
+		"task_assignees": "Assignees",
+		"task_assignees_title": "Select assignees"
+	},
+	"pagination": {
+		"previous": "Previous",
+		"next": "Next"
+	},
+	"layout": {
+		"footer_content": "TRT todo app. All rights reserved.",
+		"title": "TODO LIST APP"
+	}
 }

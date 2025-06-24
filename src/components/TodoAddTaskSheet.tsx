@@ -7,6 +7,7 @@ import { Check, ChevronsUpDown, Plus } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Category } from "@/lib/todo/fetchtodo";
+import {useTranslations} from 'next-intl';
 
 interface AddTaskSheetProps {
   newTitle: string;
@@ -31,59 +32,60 @@ export function AddTaskSheet({
 }: AddTaskSheetProps) {
   const [category, setCategory] = useState<Category | null>(null);
   const [open, setOpen] = useState(false);
-
+  const t = useTranslations('add_sheet');
+  
   return (
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="secondary">
           <Plus className="mr-2" />
-          Add Task
+          {t("button_add")}
         </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Add New Task</SheetTitle>
-          <SheetDescription>Write the name of your next task!</SheetDescription>
+          <SheetTitle>{t("sheet_title")}</SheetTitle>
+          <SheetDescription>{t("sheet_description")}</SheetDescription>
         </SheetHeader>
 
         <div className="flex flex-col space-y-4 mt-4">
           <div className="flex flex-col space-y-1">
             <label htmlFor="task-title" className="text-sm font-medium ml-2">
-              Title
+              {t("task_title")}
             </label>
             <Input
               id="task-title"
               type="text"
-              placeholder="e.g. Defeat the Grafted Scion"
+              placeholder={t("task_title_prompt")}
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
               maxLength={32}
             />
             <span className={`text-xs text-right ${newTitle.length > 30 ? "text-red-500" : "text-muted-foreground"}`}>
-              {newTitle.length}/32 characters
+              {newTitle.length}/32 {t("max_character_prompt")}
             </span>
           </div>
 
           <div className="flex flex-col space-y-1">
             <label htmlFor="task-desc" className="text-sm font-medium ml-2">
-              Description
+              {t("task_description")}
             </label>
             <textarea
               id="task-desc"
-              placeholder="e.g. Put thy ambitions to rest."
+              placeholder={t("task_description_prompt")}
               className="border rounded-md p-2 resize-none min-h-[100px]"
               value={newDescription}
               onChange={(e) => setNewDescription(e.target.value)}
               maxLength={32}
             />
             <span className={`text-xs text-right ${newDescription.length > 30 ? "text-red-500" : "text-muted-foreground"}`}>
-              {newDescription.length}/32 characters
+              {newDescription.length}/32 {t("max_character_prompt")}
             </span>
           </div>
 
           <div className="flex flex-col space-y-1">
             <label htmlFor="task-category" className="text-sm font-medium ml-2">
-              Category
+              {t("task_category")}
             </label>
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild>
@@ -94,15 +96,15 @@ export function AddTaskSheet({
                   className="justify-between">
                   {category
                     ? categoryOptions.find((opt) => opt.value === category)?.label
-                    : "Select category"}
+                    : t("dropdown_title")}
                   <ChevronsUpDown className="ml-2 h-4 w-4 opacity-50" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="p-0">
                 <Command>
-                  <CommandInput placeholder="Search category..." className="h-9" />
+                  <CommandInput placeholder={t("dropdown_search_prompt")} className="h-9" />
                   <CommandList>
-                    <CommandEmpty>No category found.</CommandEmpty>
+                    <CommandEmpty>{t("dropdown_empty")}</CommandEmpty>
                     <CommandGroup>
                       {categoryOptions.map((opt) => (
                         <CommandItem
@@ -133,7 +135,7 @@ export function AddTaskSheet({
               className="bg-black ml-2 mr-2 mt-8"
               onClick={() => handleAddTask(category)}
               disabled={!newTitle.trim() || !newDescription.trim() || !category}>
-              Add Task
+              {t("button_add_task")}
             </Button>
           </SheetClose>
         </div>
