@@ -3,29 +3,58 @@ import TodoPagination from '@/components/TodoPagination';
 import TodoDatacardContext from '@/components/TodoDatacardContext';
 import TodoDatacardTop from "@/components/TodoDatacardTop";
 import { Todo } from '@/lib/todo/fetchtodo';
+import { Category } from '@/lib/todo/fetchtodo';
 import { loadTodos } from "@/lib/todo/loadtodo";
 import { deleteTodo } from '@/lib/todo/deletetodo';
-import { updateTodo } from '@/lib/todo/updatetodo';
-import { posttodo } from '@/lib/todo/posttodo';
+import { updateTodo, UpdatePayload } from "@/lib/todo/updatetodo";
+import { addTask } from "@/lib/todo/addTask";
+import { Assignee } from '@/components/TodoDataTable';
+import { getUsers, User } from '@/lib/user/getusers';
+import { postAssign } from "@/lib/assignees/postassign";
+import { deleteAssign } from "@/lib/assignees/deleteAssign";
 
 const ITEMS_PER_PAGE = 5;
 
 const Todos: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [allAssignees, setAllAssignees] = useState<Assignee[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [newTask, setNewTask] = useState<string>("");
+  const [newTitle, setNewTitle] = useState<string>("");
+  const [newDescription, setNewDescription] = useState<string>("");
+  const [totalCount, setTotalCount] = useState(1);
+  const [pageSize, setPageSize] = useState(ITEMS_PER_PAGE);
 
-  const totalPages = Math.ceil(todos.length / ITEMS_PER_PAGE);
-
-  const HandleUpdate = async (id: number) => {
+  const HandleUpdate = async (id: number, updates: UpdatePayload) => {
     try {
-      const todo = todos.find((t) => t.id === id);
-      if (!todo) return;
-      await updateTodo(id, { completed: !todo.completed });
+      const oldTodo = todos.find((t) => t.id === id);
+      if (!oldTodo) return;
+
+      if ('assignees' in updates) {
+        const oldIds = (oldTodo.assigned ?? []).map((a) => a.userId);
+        const newIds = updates.assignees?.map((a) => a.userId) ?? [];
+
+        const added = newIds.filter((id) => !oldIds.includes(id));
+        const removed = oldIds.filter((id) => !newIds.includes(id));
+
+        for (const userId of added) {
+          await postAssign(id, [userId]);
+        }
+        for (const userId of removed) {
+          await deleteAssign(id, userId);
+        }
+      }
+
+      await updateTodo(id, updates);
+
+      // ✅ Update frontend state
       setTodos(todos.map((t) =>
-        t.id === id ? { ...t, completed: !t.completed } : t
+        t.id === id ? {
+          ...t,
+          ...updates,
+          assignees: 'assignees' in updates ? updates.assignees! : t.assigned,
+        } : t
       ));
     } catch (error) {
       console.error("Update Task failed", error);
@@ -41,45 +70,64 @@ const Todos: React.FC = () => {
     }
   };
 
-  const handleAddTask = async () => {
-    if (!newTask.trim()) return;
-    try {
-      const created = await posttodo({ title: newTask, completed: false });
-      //dummy userId
-      const fullTodo: Todo = {
-        ...created,
-        userId: 1,
-      };
-      setTodos((prev) => [fullTodo, ...prev]);
-      setNewTask("");
-    } catch (error) {
-      setError("Failed to add task");
-    }
+  const handleAddTask = (category: Category | null) => {
+    addTask({
+      newTitle,
+      newDescription,
+      category,
+      setTodos,
+      setNewTitle,
+      setError,
+    });
   };
 
+  useEffect(() => {
+    loadTodos(setTodos, setError, setLoading, setTotalCount, setCurrentPage, setPageSize, currentPage, pageSize);
+  }, [currentPage]); 
 
   useEffect(() => {
-    loadTodos(setTodos, setError, setLoading);
+    getUsers()
+      .then((users: User[]) => {
+        const assigneeList: Assignee[] = users.map((user) => ({
+          userId: user.id,
+          username: user.username,
+        }));
+        setAllAssignees(assigneeList);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch assignees", err);
+        setError("Failed to load assignees");
+      });
   }, []);
-
-  const paginatedTodos = todos.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
-  );
-
-  if (loading) return <p className="text-gray-500">Loading your quests...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
 
   return (
     <div className="space-y-4">
       <div className='flex items-center justify-between mb-4'>
-        <TodoDatacardTop newTask={newTask} setNewTask={setNewTask} handleAddTask={handleAddTask}/>
+        <TodoDatacardTop
+          newTitle={newTitle}
+          setNewTitle={setNewTitle}
+          newDescription={newDescription}
+          setNewDescription={setNewDescription}
+          handleAddTask={handleAddTask}
+        />
       </div>
       <div className="space-y-1">
-        <TodoDatacardContext todos={paginatedTodos} onCheck={HandleUpdate} onDelete={HandleDelete}/>
+        <TodoDatacardContext
+          todos={todos.map((t) => ({
+            ...t,
+            assignees: t.assigned ?? [],
+          }))}
+          onCheck={HandleUpdate}
+          onDelete={HandleDelete}
+          allAssignees={allAssignees}
+        />
       </div>
       <div className="mt-4 flex justify-center">
-        <TodoPagination currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage}/>
+        <TodoPagination
+          currentPage={currentPage}
+          totalPages={totalCount}
+          setCurrentPage={setCurrentPage}
+        />
       </div>
     </div>
   );

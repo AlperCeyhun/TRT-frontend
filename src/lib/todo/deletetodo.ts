@@ -1,5 +1,5 @@
 export async function deleteTodo(id: number) {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+  const res = await fetch(`http://localhost:5195/api/todo-tasks/${id}`, {
     method: 'DELETE',
   });
 

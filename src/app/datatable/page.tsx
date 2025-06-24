@@ -2,66 +2,73 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { ArrowBigLeft } from "lucide-react";
 import TodoDatacardTop from "@/components/TodoDatacardTop";
-import { TodoDataTable } from "@/components/TodoDataTable";
+import { Assignee, TodoDataTable } from "@/components/TodoDataTable";
 import { loadTodos } from "@/lib/todo/loadtodo";
+import { Category } from "@/lib/todo/fetchtodo";
+import { addTask } from "@/lib/todo/addTask";
+import TodoPagination from "@/components/TodoPagination";
 
 export type Todo = {
   userId: number
   id: number
   title: string
+  description: string
   completed: boolean
+  category: Category
+  assigned: Assignee[]
 }
+
+const ITEMS_PER_PAGE = 10;
+
 
 export default function Home() {
   
   const router = useRouter();
-  const [newTask, setNewTask] = useState<string>("");
   const [todos, setTodos] = useState<Todo[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  
-  
-  const handleAddTask = async () => {
-    if (!newTask.trim()) return;
+  const [newTitle, setNewTitle] = useState<string>("");
+  const [newDescription, setNewDescription] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [pageSize, setPageSize] = useState(ITEMS_PER_PAGE);
 
-    try {
-      // Simulate a fake created task with a unique ID
-      const created: Todo = {
-        id: Math.floor(Math.random() * 10000), // dummy ID
-        title: newTask,
-        completed: false,
-        userId: 1, // dummy userId
-      };
-
-      setTodos((prev) => [created, ...prev]);
-      setNewTask("");
-    } catch (error) {
-      setError("Failed to add task (dummy mode)");
-    }
+  
+  const handleAddTask = (category: Category | null) => {
+    addTask({
+      newTitle,
+      newDescription,
+      category,
+      setTodos,
+      setNewTitle,
+      setError,
+    });
   };
 
-  
-  const handleBack = () => {
-    router.push("/home");
-  };
-  
   useEffect(() => {
-    loadTodos(setTodos, setError, setLoading);
-  }, []);
+    loadTodos(setTodos, setError, setLoading, setTotalCount, setCurrentPage, setPageSize, currentPage, pageSize);
+  }, [currentPage]);
 
 	return (
     <div className="items-center justify-items-center min-h-screen relative mt-8">
-        <TodoDatacardTop newTask={newTask} setNewTask={setNewTask} handleAddTask={handleAddTask} isTableView={true}/>
+        <TodoDatacardTop
+          newTitle={newTitle}
+          setNewTitle={setNewTitle}
+          newDescription={newDescription}
+          setNewDescription={setNewDescription}
+          handleAddTask={handleAddTask}
+          isTableView={true}/>
         <div className="items-center justify-items-center mt-8 min-w-[800px]">
             <TodoDataTable todos={todos}/>
+        </div>
+        <div className="mt-4 flex justify-center">
+        <TodoPagination
+          currentPage={currentPage}
+          totalPages={totalCount}
+          setCurrentPage={setCurrentPage}
+        />
         </div>
     </div>
   );
 }
-//<Button variant={"outline"} className="absolute top-4 left-4" onClick={handleBack}>
-//  <ArrowBigLeft className="mr-2"/>
-//  Back to Home
-//</Button>

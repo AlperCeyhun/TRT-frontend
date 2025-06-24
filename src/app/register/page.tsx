@@ -9,7 +9,10 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { postRegister } from "@/lib/register/postregister";
+import { postRegister } from "@/lib/user/postregister";
+import { toast } from "sonner";
+import {useTranslations} from 'next-intl';
+
 
 const registerSchema = yup.object({
   username: yup.string().required("Username is required").min(3, "Too short"),
@@ -25,6 +28,7 @@ type RegisterFormValues = yup.InferType<typeof registerSchema>;
 export default function RegisterPage() {
   const router = useRouter();
   const [serverError, setServerError] = useState("");
+  const t = useTranslations('login');
 
   const {
     register,
@@ -39,8 +43,12 @@ export default function RegisterPage() {
       setServerError("");
       const { username, password } = data;
       const response = await postRegister({ username, password });
-      console.log("Registered user:", response);
-      router.push("/home");
+
+      toast.success("🎉 Registration successful!", {
+        description: `Welcome aboard, ${username}!`,
+      });
+
+      router.push("/datatable");
     } catch (err: any) {
       console.error("Registration error:", err);
       setServerError("Registration failed.");
@@ -55,15 +63,15 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center">
       <Card className="w-full max-w-sm p-6 shadow-lg">
         <h2 className="text-2xl font-semibold text-center mb-6 text-gray-800 dark:text-gray-100">
-          Register
+          {t('title')}
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <Label htmlFor="username">Username</Label>
+            <Label htmlFor="username">{t('username_title')}</Label>
             <Input
               id="username"
               {...register("username")}
-              placeholder="Enter your username"
+              placeholder={t('username_prompt')}
               className="mt-1"
             />
             {errors.username && (
@@ -73,12 +81,12 @@ export default function RegisterPage() {
             )}
           </div>
           <div>
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{t('password_title')}</Label>
             <Input
               id="password"
               type="password"
               {...register("password")}
-              placeholder="Create a password"
+              placeholder={t('password_prompt')}
               className="mt-1"/>
             {errors.password && (
               <p className="text-sm text-red-500 mt-1">
@@ -87,12 +95,12 @@ export default function RegisterPage() {
             )}
           </div>
           <div>
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Label htmlFor="confirmPassword">{t('confirm_password_title')}</Label>
             <Input
               id="confirmPassword"
               type="password"
               {...register("confirmPassword")}
-              placeholder="Repeat your password"
+              placeholder={t('confirm_password_prompt')}
               className="mt-1"/>
             {errors.confirmPassword && (
               <p className="text-sm text-red-500 mt-1">
@@ -106,16 +114,16 @@ export default function RegisterPage() {
           )}
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Signing Up..." : "Sign Up"}
+            {isSubmitting ? "Signing Up..." : t('sign_up_title')}
           </Button>
 
           <p className="text-sm text-center">
-            Already have an account?
+            {t('login_message')}
             <a
               href="#"
               onClick={handleLoginRedirect}
               className="font-medium text-indigo-600 hover:text-indigo-500 px-2 hover:underline">
-              Sign in
+              {t('sign_in_title')}
             </a>
           </p>
         </form>

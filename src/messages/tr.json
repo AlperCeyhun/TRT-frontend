@@ -1,0 +1,84 @@
+{
+	"login": {
+		"title": "TODO",
+		"username_title": "kullanıcı adı",
+		"username_prompt": "kullanıcı adı",
+		"password_title": "şifre",
+		"sign_in_title": "Giriş Yap",
+		"register_message": "Hesabın yok mu?",
+		"sign_up_title": "Kayıt Ol"
+	},
+	"register": {
+		"title": "Kayıt Ol",
+		"username_title": "kullanıcı adı",
+		"username_prompt": "kullanıcı adın.",
+		"password_title": "şifre",
+		"password_prompt": "şifre oluştur.",
+		"confirm_password_title": "Şifre Tekrar",
+		"confirm_password_prompt": "şifreni tekrar gir.",
+		"sign_up_title": "Kayıt Ol",
+		"sign_up_title_progress": "Kayıt olunuyor...",
+		"login_message": "Zaten hesabın var mı?",
+		"sign_in_title": "Giriş Yap"
+	},
+	"datatable": {
+		"table_title": "başlık",
+		"table_completed": "tamamlandı",
+		"table_description": "açıklama",
+		"table_category": "kategori",
+		"table_assigned_to": "atanan",
+		"search_prompt": "Başlık ara...",
+		"button_columns": "Sütunlar",
+		"button_columns_accessorkey": "atananlar",
+		"table_actions": "İşlemler",
+		"actions_copy": "kopyala",
+		"message_no_task": "Görev bulunamadı.",
+		"actions_mark": "Tamamlandı işaretle",
+		"actions_unmark": "Tamamlandı kaldır",
+		"table_assigned_to_none": "Yok"
+	},
+	"datacard": {
+		"badge_true": "Tamamlandı",
+		"badge_false": "Eksik",
+		"assigned_to": "Atanan:",
+		"button_delete": "Görevi Sil"
+	},
+	"pgtop": {
+		"title": "📝To-do Listesi",
+		"button_view_table": "Düzenleme Görünümü",
+		"button_view_card": "Tablo Görünümü"
+	},
+	"add_sheet": {
+		"button_add": "Görev Ekle",
+		"sheet_title": "Yeni Görev Ekle",
+		"sheet_description": "Yeni görev detaylarını yaz!",
+		"task_title": "Başlık",
+		"task_title_prompt": "ör. Grafted Scion'u yen",
+		"task_description": "Açıklama",
+		"task_description_prompt": "ör. Hırsını bırak.",
+		"task_category": "Kategori",
+		"dropdown_title": "Kategori Seç",
+		"dropdown_search_prompt": "kategori ara...",
+		"dropdown_empty": "Kategori bulunamadı.",
+		"button_add_task": "Görev Ekle",
+		"max_character_prompt": "karakter"
+	},
+	"edit_sheet": {
+		"button_edit": "düzenle",
+		"sheet_title": "Görevi Düzenle",
+		"task_title": "Başlık",
+		"task_description": "Açıklama",
+		"task_category": "Kategori",
+		"dropdown_title": "Kategori Seç",
+		"task_assignees": "Atananlar",
+		"task_assignees_title": "Kişi seç"
+	},
+	"pagination": {
+		"previous": "Geri",
+		"next": "İleri"
+	},
+	"layout": {
+		"footer_content": "TRT TODO uygulaması. Tüm hakları saklıdır.",
+		"title": "TODO LIST APP"
+	}
+}

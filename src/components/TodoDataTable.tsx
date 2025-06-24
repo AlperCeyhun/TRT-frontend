@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -32,12 +31,24 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import { Category } from "@/lib/todo/fetchtodo";
+import { MarkCompleteDropdownItem } from "./TodoMarkComplete";
+import { getUsers, User } from "@/lib/user/getusers";
+import { useTranslations } from "next-intl";
+
+export type Assignee = {
+  userId: number;
+  username: string;
+};
 
 export type Todo = {
-  userId: number;
+  userId?: number;
   id: number;
   title: string;
+  description: string;
+  category: Category;
   completed: boolean;
+  assigned: Assignee[];
 };
 
 type TodoDataTableProps = {
@@ -45,34 +56,36 @@ type TodoDataTableProps = {
 };
 
 export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
+  const [users, setUsers] = React.useState<User[]>([]);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  const t = useTranslations('datatable');
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const allUsers = await getUsers();
+        setUsers(allUsers);
+        console.log(allUsers);
+      } catch (err) {
+        console.error("Failed to fetch users:", err);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+  useEffect(() => {
+    console.log("Users state updated:", users);
+  }, [users]);
+  console.log("Todos:", todos);
+  const getUsernamesFromAssignees = (assignees?: Assignee[] | null): string => {
+    if (!Array.isArray(assignees)) return t("table_assigned_to_none");
+    return assignees.map((a) => a.username).join(", ");
+  };
 
   const columns: ColumnDef<Todo>[] = [
-    {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
     {
       accessorKey: "title",
       header: ({ column }) => (
@@ -80,7 +93,7 @@ export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Title
+          {t("table_title")}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       ),
@@ -88,10 +101,45 @@ export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
     },
     {
       accessorKey: "completed",
-      header: "Completed",
+      header: t("table_completed"),
       cell: ({ row }) => (
         <div>{row.getValue("completed") ? "✅" : "❌"}</div>
       ),
+    },
+    {
+      accessorKey: "description",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          {t("table_description")}
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => <div>{row.getValue("description")}</div>,
+    },
+    {
+      accessorKey: "category",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          {t("table_category")}
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => <div className="capitalize">{row.getValue("category")}</div>,
+    },
+    {
+      accessorKey: "assignees",
+      header: t("table_assigned_to"),
+      cell: ({ row }) => {
+        const assignees = row.getValue("assignees") as Assignee[];
+        const names = getUsernamesFromAssignees(assignees);
+        return <div>{names || "None"}</div>;
+      },
     },
     {
       id: "actions",
@@ -105,20 +153,14 @@ export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuLabel>{t("table_actions")}</DropdownMenuLabel>
               <DropdownMenuItem
                 onClick={() => navigator.clipboard.writeText(todo.title)}
               >
-                Copy Title
+                {t("actions_copy")}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={() => {
-                  // add markcomplete .ts functionality here
-                  console.log(`Marking todo ${todo.id} as complete`);
-                }}>
-                Mark Complete
-              </DropdownMenuItem>
+              <MarkCompleteDropdownItem todo={todo} />
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -149,7 +191,7 @@ export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
     <div className="w-full text-white">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter titles..."
+          placeholder={t("search_prompt")}
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("title")?.setFilterValue(event.target.value)
@@ -159,7 +201,7 @@ export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto text-black">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
+              {t("button_columns")} <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
@@ -216,7 +258,7 @@ export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  No tasks found.
+                  {t("message_no_task")}
                 </TableCell>
               </TableRow>
             )}
