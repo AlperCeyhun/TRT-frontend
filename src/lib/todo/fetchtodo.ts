@@ -13,7 +13,7 @@ export type Todo = {
   description: string;
   category: Category;
   completed: boolean;
-  assigned: Assignee[];
+  assignee: Assignee[];
 };
 
 type TodoApiResponse = {

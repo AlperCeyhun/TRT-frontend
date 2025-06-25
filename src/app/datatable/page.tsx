@@ -9,16 +9,7 @@ import { Category } from "@/lib/todo/fetchtodo";
 import { addTask } from "@/lib/todo/addTask";
 import TodoPagination from "@/components/TodoPagination";
 import { useCheckToken } from "@/lib/user/checkToken";
-
-export type Todo = {
-  userId: number
-  id: number
-  title: string
-  description: string
-  completed: boolean
-  category: Category
-  assigned: Assignee[]
-}
+import type { Todo } from "@/lib/todo/fetchtodo";
 
 const ITEMS_PER_PAGE = 10;
 

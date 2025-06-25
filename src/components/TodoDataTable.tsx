@@ -35,20 +35,11 @@ import { Category } from "@/lib/todo/fetchtodo";
 import { MarkCompleteDropdownItem } from "./TodoMarkComplete";
 import { getUsers, User } from "@/lib/user/getusers";
 import { useTranslations } from "next-intl";
+import type { Todo } from "@/lib/todo/fetchtodo";
 
 export type Assignee = {
   userId: number;
   username: string;
-};
-
-export type Todo = {
-  userId?: number;
-  id: number;
-  title: string;
-  description: string;
-  category: Category;
-  completed: boolean;
-  assignee: Assignee[];
 };
 
 type TodoDataTableProps = {
