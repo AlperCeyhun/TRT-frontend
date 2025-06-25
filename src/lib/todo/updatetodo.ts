@@ -14,6 +14,7 @@ export async function updateTodo(id: number, updates: UpdatePayload) {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
+      "Authorization": "Bearer " + localStorage.token,
     },
     body: JSON.stringify(updates),
   });

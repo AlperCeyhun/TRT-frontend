@@ -8,7 +8,7 @@ import { loadTodos } from "@/lib/todo/loadtodo";
 import { Category } from "@/lib/todo/fetchtodo";
 import { addTask } from "@/lib/todo/addTask";
 import TodoPagination from "@/components/TodoPagination";
-import { checkToken } from "@/lib/user/checkToken";
+import { useCheckToken } from "@/lib/user/checkToken";
 
 export type Todo = {
   userId: number
@@ -21,7 +21,6 @@ export type Todo = {
 }
 
 const ITEMS_PER_PAGE = 10;
-
 
 export default function Home() {
   
@@ -50,7 +49,7 @@ export default function Home() {
   useEffect(() => {
     loadTodos(setTodos, setError, setLoading, setTotalCount, setCurrentPage, setPageSize, currentPage, pageSize);
   }, [currentPage]);
-  checkToken();
+  useCheckToken();
   if(loading) return <div></div>
 	return (
     <div className="items-center justify-items-center min-h-screen relative mt-8">

@@ -36,7 +36,6 @@ export async function fetchTodos(
   if (!res.ok) {
     throw new Error(`Failed to fetch todos. Status: ${res.status}`);
   }
-
   const json: TodoApiResponse = await res.json();
   return json;
 }
