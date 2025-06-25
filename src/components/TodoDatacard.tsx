@@ -95,7 +95,6 @@ const Todos: React.FC = () => {
         setAllAssignees(assigneeList);
       })
       .catch((err) => {
-        console.error("Failed to fetch assignees", err);
         setError("Failed to load assignees");
       });
   }, []);

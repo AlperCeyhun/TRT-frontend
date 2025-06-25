@@ -26,7 +26,6 @@ export function MarkCompleteDropdownItem({ todo, onUpdated }: Props) {
         assignees: todo.assignee
       };
       await updateTodo(todo.id, updates);
-      console.log(`Marked todo ${todo.id} as complete`);
 
       if (onUpdated) onUpdated();
     } catch (error) {

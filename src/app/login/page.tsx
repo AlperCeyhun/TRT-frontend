@@ -23,7 +23,6 @@ const LoginPage = () => {
     setErrorMessage("");
 
     try {
-      console.log("Trying to login with username:", username);
 
       const response = await fetch("http://localhost:5195/api/users/login", {
         method: "POST",
@@ -36,16 +35,12 @@ const LoginPage = () => {
         }),
       });
 
-      console.log("Response status:", response.status);
-
       if (response.ok) {
         const data = await response.json();
-        console.log("Login successful, data:", data);
 
         if (data.token) {
           localStorage.setItem("token", data.token);
           localStorage.setItem("username", username);
-          console.log("Token stored in localStorage:", data.token);
           if (data.isAdmin) {
             router.push("/datacard");
           } else {
@@ -68,7 +63,6 @@ const LoginPage = () => {
         setErrorMessage(errorText);
       }
     } catch (error) {
-      console.error("Login error:", error);
       setErrorMessage("Server connection failed. Make sure the backend is running.");
     }
   };
@@ -76,7 +70,6 @@ const LoginPage = () => {
   const handleRegister = (e: React.MouseEvent) => {
     e.preventDefault();
     router.push("/register");
-    console.log("Redirecting to register page");
   };
 
   return (

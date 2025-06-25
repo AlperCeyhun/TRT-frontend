@@ -48,7 +48,7 @@ export type Todo = {
   description: string;
   category: Category;
   completed: boolean;
-  assigned: Assignee[];
+  assignee: Assignee[];
 };
 
 type TodoDataTableProps = {
@@ -68,7 +68,6 @@ export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
       try {
         const allUsers = await getUsers();
         setUsers(allUsers);
-        console.log(allUsers);
       } catch (err) {
         console.error("Failed to fetch users:", err);
       }

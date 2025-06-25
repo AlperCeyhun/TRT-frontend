@@ -53,7 +53,6 @@ export default function RegisterPage() {
 
       router.push("/datatable");
     } catch (err: any) {
-      console.error("Registration error:", err);
       setServerError("Registration failed.");
     }
   };

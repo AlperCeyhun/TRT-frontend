@@ -12,7 +12,6 @@ export function getUserPermissions(): string[] {
     if (!token) return [];
 
     const decoded = jwtDecode<DecodedToken>(token);
-    console.log(decoded.permission);
     return decoded.permission || [];
   } catch (err) {
     console.error("Failed to decode token:", err);
