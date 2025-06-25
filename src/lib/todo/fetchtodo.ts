@@ -27,7 +27,11 @@ export async function fetchTodos(
   pageNumber = 1,
   pageSize = 5
 ): Promise<TodoApiResponse> {
-  const res = await fetch(`http://localhost:5195/api/todo-tasks?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+  const res = await fetch(`http://localhost:5195/api/todo-tasks?pageNumber=${pageNumber}&pageSize=${pageSize}`, {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + localStorage.token,
+        }});
 
   if (!res.ok) {
     throw new Error(`Failed to fetch todos. Status: ${res.status}`);

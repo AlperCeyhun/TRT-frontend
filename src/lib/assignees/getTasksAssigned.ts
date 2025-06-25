@@ -3,6 +3,7 @@ export async function getTasksAssigned(userId: number): Promise<number[]> {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      "Authorization": "Bearer " + localStorage.token,
     },
   });
 

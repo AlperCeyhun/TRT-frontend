@@ -3,7 +3,10 @@ import { Category } from "@/lib/todo/fetchtodo";
 export async function posttodo(newTodo: { title: string; description: string; category: Category; completed?: boolean }) {
   const res = await fetch("http://localhost:5195/api/todo-tasks", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { 
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + localStorage.token,
+    },
     body: JSON.stringify({
       ...newTodo,
     }),

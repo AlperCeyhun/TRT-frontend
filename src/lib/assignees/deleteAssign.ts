@@ -3,6 +3,7 @@ export async function deleteAssign(taskId: number, userId: number): Promise<void
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
+      "Authorization": "Bearer " + localStorage.token,
     },
   });
 

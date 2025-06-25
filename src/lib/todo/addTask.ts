@@ -1,5 +1,3 @@
-// lib/todo/addTask.ts
-
 import { Category, Todo } from "@/lib/todo/fetchtodo";
 import { posttodo } from "@/lib/todo/posttodo";
 
@@ -36,6 +34,7 @@ export async function addTask({
       userId: 1,
       description: newDescription || "",
       category,
+      assigned: []
     };
 
     setTodos((prev) => [fullTodo, ...prev]);
