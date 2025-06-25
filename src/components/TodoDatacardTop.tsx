@@ -1,11 +1,12 @@
 "use client";
 
-import React, { Dispatch, SetStateAction } from "react";
-import { AddTaskSheet } from '@/components/TodoAddTaskSheet';
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { AddTaskSheet } from "@/components/TodoAddTaskSheet";
 import { Category } from "@/lib/todo/fetchtodo";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import {useTranslations} from 'next-intl';
+import { useTranslations } from "next-intl";
+import { getUserPermissions } from "@/lib/user/getUserPermissions";
 
 interface TodoDatacardTopProps {
   newTitle: string;
@@ -25,7 +26,28 @@ const TodoDatacardTop: React.FC<TodoDatacardTopProps> = ({
   isTableView = false,
 }) => {
   const router = useRouter();
-  const t = useTranslations('pgtop');
+  const t = useTranslations("pgtop");
+
+  const [canAddTask, setCanAddTask] = useState(false);
+  const [canSwitchView, setCanSwitchView] = useState(false);
+
+  useEffect(() => {
+    const permissions = getUserPermissions();
+
+    setCanAddTask(permissions.includes("Add Task"));
+
+    const requiredEditPermissions = [
+      "Edit Task Title",
+      "Edit Task Description",
+      "Edit Task Status",
+      "Edit Task Assignees",
+    ];
+
+    const hasAllEditPermissions = requiredEditPermissions.every((perm) =>
+      permissions.includes(perm)
+    );
+    setCanSwitchView(hasAllEditPermissions);
+  }, []);
 
   const handleSwitchView = () => {
     router.push(isTableView ? "/datacard" : "/datatable");
@@ -36,16 +58,23 @@ const TodoDatacardTop: React.FC<TodoDatacardTopProps> = ({
       <h2 className="text-xl font-bold text-white">{t("title")}</h2>
       <div className="flex items-center space-x-2 mt-2">
         <div className="flex items-center space-x-2">
-          <Button onClick={handleSwitchView} variant={"outline"}>
-            <span className="text-sm font-semibold">
-              {isTableView ? t("button_view_table") : t("button_view_card")}
-            </span>
-          </Button>
-          <AddTaskSheet
-            newTitle={newTitle}
-            setNewTitle={setNewTitle} newDescription={newDescription} setNewDescription={setNewDescription}
-            handleAddTask={handleAddTask}
-          />
+          {canSwitchView && (
+            <Button onClick={handleSwitchView} variant={"outline"}>
+              <span className="text-sm font-semibold">
+                {isTableView ? t("button_view_table") : t("button_view_card")}
+              </span>
+            </Button>
+          )}
+
+          {canAddTask && (
+            <AddTaskSheet
+              newTitle={newTitle}
+              setNewTitle={setNewTitle}
+              newDescription={newDescription}
+              setNewDescription={setNewDescription}
+              handleAddTask={handleAddTask}
+            />
+          )}
         </div>
       </div>
     </div>

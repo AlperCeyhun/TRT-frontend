@@ -5,8 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { clearLocalStorage } from "@/lib/user/clearLocalStorage";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -15,6 +16,8 @@ const LoginPage = () => {
   const router = useRouter();
   const t = useTranslations("login");
 
+  clearLocalStorage();
+  
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");

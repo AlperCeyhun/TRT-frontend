@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { postRegister } from "@/lib/user/postregister";
 import { toast } from "sonner";
 import {useTranslations} from 'next-intl';
+import { clearLocalStorage } from "@/lib/user/clearLocalStorage";
 
 
 const registerSchema = yup.object({
@@ -29,6 +30,8 @@ export default function RegisterPage() {
   const router = useRouter();
   const [serverError, setServerError] = useState("");
   const t = useTranslations('register');
+
+  clearLocalStorage();
 
   const {
     register,

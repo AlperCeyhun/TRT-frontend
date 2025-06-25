@@ -79,7 +79,7 @@ export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
   useEffect(() => {
     console.log("Users state updated:", users);
   }, [users]);
-  console.log("Todos:", todos);
+
   const getUsernamesFromAssignees = (assignees?: Assignee[] | null): string => {
     if (!Array.isArray(assignees)) return t("table_assigned_to_none");
     return assignees.map((a) => a.username).join(", ");
