@@ -41,6 +41,7 @@ const LoginPage = () => {
 
         if (data.token) {
           localStorage.setItem("token", data.token);
+          localStorage.setItem("username", username);
           console.log("Token stored in localStorage:", data.token);
           if (data.isAdmin) {
             router.push("/datacard");
