@@ -80,5 +80,10 @@
 	"layout": {
 		"footer_content": "TRT TODO uygulaması. Tüm hakları saklıdır.",
 		"title": "TODO LIST APP"
+	},
+	"unauthorized": {
+  		"title": "🚫 Yetkisiz Erişim",
+  		"description": "Bu sayfaya erişim yetkiniz yok. Belki yetkilerinizi artırmanız gerekiyordur ya da geri dönün.",
+  		"button_label": "Giriş sayfasına git"
 	}
 }

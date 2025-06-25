@@ -80,5 +80,10 @@
 	"layout": {
 		"footer_content": "TRT todo app. All rights reserved.",
 		"title": "TODO LIST APP"
+	},
+	"unauthorized":{
+		"title": "🚫 Unauthorized",
+		"description": "You don't have access to this page. Maybe level up your permissions or go back.",
+		"button_label": "Go to login"
 	}
 }
