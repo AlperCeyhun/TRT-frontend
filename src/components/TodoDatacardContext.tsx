@@ -13,6 +13,9 @@ import { UpdatePayload } from "@/lib/todo/updatetodo";
 import TodoUpdateTaskSheet from "@/components/TodoUpdateTaskSheet";
 import { Assignee } from "./TodoDataTable";
 import { useTranslations } from 'next-intl';
+import { getUserPermissions } from "@/lib/user/getUserPermissions";
+import { requiredEditPermissions } from "@/lib/user/requiredEditPermissions";
+import { checkAnyPermission } from "@/lib/user/checkAnyPermission";
 
 export interface Todo {
   id: number;
@@ -37,6 +40,10 @@ const TodoDatacardContext: React.FC<TodoDatacardContextProps> = ({
   onDelete,
 }) => {
   const t = useTranslations('datacard');
+
+  const permissions = typeof window !== "undefined" ? getUserPermissions() : [];
+  const canEdit = checkAnyPermission(permissions, requiredEditPermissions);
+  const canDelete = permissions.includes("Delete Task");
 
   return (
     <>
@@ -72,22 +79,25 @@ const TodoDatacardContext: React.FC<TodoDatacardContextProps> = ({
                 </div>
                 {todo.assignees?.length > 0 && (
                   <div className="mt-2 text-sm text-muted-foreground">
-                    {t('assigned_to')}{" "}
-                    {todo.assignees.map((a) => a.username).join(", ")}
+                    {t('assigned_to')} {todo.assignees.map((a) => a.username).join(", ")}
                   </div>
                 )}
               </CardDescription>
             </CardContent>
           </div>
-          <div>
-            <TodoUpdateTaskSheet todo={todo} onUpdate={onCheck} allAssignees={allAssignees} />
-            <Button
-              variant="outline"
-              className="ml-2 bg-red-600 text-white"
-              onClick={() => onDelete(todo.id)}
-            >
-              {t('button_delete')}
-            </Button>
+          <div className="flex gap-2">
+            {canEdit && (
+              <TodoUpdateTaskSheet todo={todo} onUpdate={onCheck} allAssignees={allAssignees} />
+            )}
+            {canDelete && (
+              <Button
+                variant="outline"
+                className="ml-2 bg-red-600 text-white"
+                onClick={() => onDelete(todo.id)}
+              >
+                {t('button_delete')}
+              </Button>
+            )}
           </div>
         </Card>
       ))}

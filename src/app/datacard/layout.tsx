@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getUserPermissions } from "@/lib/user/getUserPermissions";
+import { requiredEditPermissions } from "@/lib/user/requiredEditPermissions";
+import { checkAnyPermission } from "@/lib/user/checkAnyPermission";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -11,17 +13,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   useEffect(() => {
     const permissions = getUserPermissions();
-    const requiredEditPermissions = [
-      "Edit Task Title",
-      "Edit Task Description",
-      "Edit Task Status",
-      "Edit Task Assignees",
-    ];
-    const hasAllEditPermissions = requiredEditPermissions.every((perm) =>
-      permissions.includes(perm)
-    );
-
-    if (!hasAllEditPermissions) {
+    
+    const hasAnyEditPermissions = checkAnyPermission(permissions,requiredEditPermissions);
+    if (!hasAnyEditPermissions) {
       router.replace("/unauthorized");
     } else {
       setAuthorized(true);

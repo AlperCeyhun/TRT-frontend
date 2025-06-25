@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { getUserPermissions } from "@/lib/user/getUserPermissions";
+import { requiredEditPermissions } from "@/lib/user/requiredEditPermissions";
+import { checkAnyPermission } from "@/lib/user/checkAnyPermission";
 
 interface TodoDatacardTopProps {
   newTitle: string;
@@ -36,17 +38,8 @@ const TodoDatacardTop: React.FC<TodoDatacardTopProps> = ({
 
     setCanAddTask(permissions.includes("Add Task"));
 
-    const requiredEditPermissions = [
-      "Edit Task Title",
-      "Edit Task Description",
-      "Edit Task Status",
-      "Edit Task Assignees",
-    ];
-
-    const hasAllEditPermissions = requiredEditPermissions.every((perm) =>
-      permissions.includes(perm)
-    );
-    setCanSwitchView(hasAllEditPermissions);
+    const hasAnyEditPermissions = checkAnyPermission(permissions, requiredEditPermissions);
+    setCanSwitchView(hasAnyEditPermissions);
   }, []);
 
   const handleSwitchView = () => {

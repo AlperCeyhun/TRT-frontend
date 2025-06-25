@@ -36,6 +36,7 @@ import { MarkCompleteDropdownItem } from "./TodoMarkComplete";
 import { getUsers, User } from "@/lib/user/getusers";
 import { useTranslations } from "next-intl";
 import type { Todo } from "@/lib/todo/fetchtodo";
+import { getUserPermissions } from "@/lib/user/getUserPermissions";
 
 export type Assignee = {
   userId: number;
@@ -54,6 +55,9 @@ export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
   const [rowSelection, setRowSelection] = React.useState({});
   const t = useTranslations('datatable');
 
+  const permissions = typeof window !== "undefined" ? getUserPermissions() : [];
+  const canMarkComplete = permissions.includes("Edit Task Status");
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -66,6 +70,7 @@ export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
 
     fetchUsers();
   }, []);
+
   useEffect(() => {
     console.log("Users state updated:", users);
   }, [users]);
@@ -150,7 +155,7 @@ export const TodoDataTable: React.FC<TodoDataTableProps> = ({ todos }) => {
                 {t("actions_copy")}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <MarkCompleteDropdownItem todo={todo} />
+              {canMarkComplete && <MarkCompleteDropdownItem todo={todo} />}
             </DropdownMenuContent>
           </DropdownMenu>
         );
