@@ -2,12 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import TodoDatacardTop from "@/components/TodoDatacardTop";
-import { Assignee, TodoDataTable } from "@/components/TodoDataTable";
+import TodoDatacardTop from "@/components/todo/TodoDatacardTop";
+import { Assignee, TodoDataTable } from "@/components/todo/TodoDataTable";
 import { loadTodos } from "@/lib/todo/loadtodo";
 import { Category } from "@/lib/todo/fetchtodo";
 import { addTask } from "@/lib/todo/addTask";
-import TodoPagination from "@/components/TodoPagination";
+import TodoPagination from "@/components/todo/TodoPagination";
 import { useCheckToken } from "@/lib/user/checkToken";
 import type { Todo } from "@/lib/todo/fetchtodo";
 

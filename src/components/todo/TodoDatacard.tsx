@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import TodoPagination from '@/components/TodoPagination';
-import TodoDatacardContext from '@/components/TodoDatacardContext';
-import TodoDatacardTop from "@/components/TodoDatacardTop";
+import TodoPagination from '@/components/todo/TodoPagination';
+import TodoDatacardContext from '@/components/todo/TodoDatacardContext';
+import TodoDatacardTop from "@/components/todo/TodoDatacardTop";
 import { Todo } from '@/lib/todo/fetchtodo';
 import { Category } from '@/lib/todo/fetchtodo';
 import { loadTodos } from "@/lib/todo/loadtodo";
 import { deleteTodo } from '@/lib/todo/deletetodo';
 import { updateTodo, UpdatePayload } from "@/lib/todo/updatetodo";
 import { addTask } from "@/lib/todo/addTask";
-import { Assignee } from '@/components/TodoDataTable';
+import { Assignee } from '@/components/todo/TodoDataTable';
 import { getUsers, User } from '@/lib/user/getusers';
 import { postAssign } from "@/lib/assignees/postassign";
 import { deleteAssign } from "@/lib/assignees/deleteAssign";
@@ -32,7 +32,7 @@ const Todos: React.FC = () => {
       if (!oldTodo) return;
 
       if ('assignees' in updates) {
-        const oldIds = (oldTodo.assigned ?? []).map((a) => a.userId);
+        const oldIds = (oldTodo.assignee ?? []).map((a) => a.userId);
         const newIds = updates.assignees?.map((a) => a.userId) ?? [];
 
         const added = newIds.filter((id) => !oldIds.includes(id));
@@ -53,7 +53,7 @@ const Todos: React.FC = () => {
         t.id === id ? {
           ...t,
           ...updates,
-          assignees: 'assignees' in updates ? updates.assignees! : t.assigned,
+          assignees: 'assignees' in updates ? updates.assignees! : t.assignee,
         } : t
       ));
     } catch (error) {
@@ -114,7 +114,7 @@ const Todos: React.FC = () => {
         <TodoDatacardContext
           todos={todos.map((t) => ({
             ...t,
-            assignees: t.assigned ?? [],
+            assignees: t.assignee ?? [],
           }))}
           onCheck={HandleUpdate}
           onDelete={HandleDelete}

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import TodoDatacard from "@/components/TodoDatacard";
+import TodoDatacard from "@/components/todo/TodoDatacard";
 import { useCheckToken } from "@/lib/user/checkToken";
 
 export default function Home() {

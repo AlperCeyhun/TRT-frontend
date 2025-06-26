@@ -1,5 +1,5 @@
 import { Category } from "@/lib/todo/fetchtodo";
-import { Assignee } from "@/components/TodoDataTable";
+import { Assignee } from "@/components/todo/TodoDataTable";
 
 export interface UpdatePayload {
   title?: string;

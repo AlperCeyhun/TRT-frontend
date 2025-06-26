@@ -1,4 +1,4 @@
-import { Assignee } from "@/components/TodoDataTable";
+import { Assignee } from "@/components/todo/TodoDataTable";
 
 export enum Category {
   Acil = "Acil",
