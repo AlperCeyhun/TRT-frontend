@@ -19,12 +19,7 @@ import { cn } from "@/lib/utils";
 import { Assignee } from "./TodoDataTable";
 import { useTranslations } from "next-intl";
 import { getUserPermissions } from "@/lib/user/getUserPermissions";
-
-enum Category {
-  Acil = "Acil",
-  Normal = "Normal",
-  DusukOncelik = "DusukOncelik",
-}
+import { Category } from "@/lib/todo/fetchtodo";
 
 interface TodoUpdateTaskSheetProps {
   todo: {
