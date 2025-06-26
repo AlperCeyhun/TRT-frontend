@@ -75,7 +75,7 @@ export default function ChatWindow({
             </strong>
             : {msg.content}{" "}
             <span className="text-xs text-gray-500">
-              ({new Date(msg.createdAt).toLocaleTimeString()})
+              ({new Date(msg.createdAt).toLocaleTimeString("tr-TR", {timeZone: "Europe/Istanbul",})})
             </span>
           </div>
         ))}
