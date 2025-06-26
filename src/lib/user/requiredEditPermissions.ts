@@ -3,5 +3,4 @@ export const requiredEditPermissions = [
   "Edit Task Description",
   "Edit Task Status",
   "Edit Task Assignees",
-  "Delete Task"
 ];
