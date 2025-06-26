@@ -16,7 +16,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     
     const hasAnyEditPermissions = checkAnyPermission(permissions,requiredEditPermissions);
     const canDelete = permissions.includes("Delete Task");
-    if (!hasAnyEditPermissions || canDelete) {
+    if (!hasAnyEditPermissions && !canDelete) {
       router.replace("/unauthorized");
     } else {
       setAuthorized(true);
