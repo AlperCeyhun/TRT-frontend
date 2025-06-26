@@ -37,7 +37,7 @@ export default async function RootLayout({
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Header/>
           {children}
-          <Toaster richColors position="bottom-right" />
+          <Toaster richColors position="bottom-left" />
           <div className="fixed bottom-4 right-4 z-50">
             <ClientChatToggle/>
           </div>

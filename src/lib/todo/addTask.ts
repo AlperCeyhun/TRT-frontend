@@ -34,7 +34,7 @@ export async function addTask({
       userId: 1,
       description: newDescription || "",
       category,
-      assigned: []
+      assignee: []
     };
 
     setTodos((prev) => [fullTodo, ...prev]);
