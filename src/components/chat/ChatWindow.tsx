@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { getConnection } from "@/lib/signalr/signalrConnection";
 import { useSignalRChat } from "@/lib/signalr/useSignalrChat";
 import { useTranslations } from "next-intl";
+import { useRef } from "react";
 
 interface ChatWindowProps {
   currentUser: string;
@@ -27,6 +28,7 @@ export default function ChatWindow({
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const t = useTranslations("chat");
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!currentUser || !selectedUser) return;
@@ -35,6 +37,10 @@ export default function ChatWindow({
       .then((res) => res.json())
       .then(setMessages);
   }, [currentUser, selectedUser]);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useSignalRChat(localStorage.getItem("token") || "", (message: string) => {
     try {
@@ -77,10 +83,13 @@ export default function ChatWindow({
             </strong>
             : {msg.content}{" "}
             <span className="text-xs text-gray-500">
-              ({new Date(msg.createdAt).toLocaleTimeString("tr-TR", {timeZone: "Europe/Istanbul",})})
+              ({new Date(msg.createdAt).toLocaleTimeString("tr-TR", {
+                timeZone: "Europe/Istanbul",
+              })})
             </span>
           </div>
         ))}
+        <div ref={bottomRef} />
       </ScrollArea>
 
       <div className="flex gap-2">
