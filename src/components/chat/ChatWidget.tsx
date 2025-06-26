@@ -3,10 +3,12 @@
 import { useEffect, useState } from "react";
 import ChatUserList from "./ChatUserList";
 import ChatWindow from "./ChatWindow";
+import { useTranslations } from "next-intl";
 
 export default function ChatWidget() {
   const [currentUser, setCurrentUser] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
+  const t = useTranslations("chat");
 
   useEffect(() => {
     const username = localStorage.getItem("username");
@@ -15,7 +17,7 @@ export default function ChatWidget() {
     }
   }, []);
 
-  if (!currentUser) return <div className="p-4">Giriş yapılıyor...</div>;
+  if (!currentUser) return <div className="p-4">{t("login_placeholder")}</div>;
 
   return (
     <div className="flex w-[400px] h-[500px] max-w-4xl border rounded-2xl shadow-lg overflow-hidden bg-white dark:bg-black">
@@ -31,7 +33,7 @@ export default function ChatWidget() {
         />
       ) : (
         <div className="flex-1 flex items-center justify-center text-gray-500">
-          Bir kullanıcı seçin
+          {t("window_placeholder")}
         </div>
       )}
     </div>

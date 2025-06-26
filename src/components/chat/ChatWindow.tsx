@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { getConnection } from "@/lib/signalr/signalrConnection";
 import { useSignalRChat } from "@/lib/signalr/useSignalrChat";
+import { useTranslations } from "next-intl";
 
 interface ChatWindowProps {
   currentUser: string;
@@ -25,6 +26,7 @@ export default function ChatWindow({
 }: ChatWindowProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
+  const t = useTranslations("chat");
 
   useEffect(() => {
     if (!currentUser || !selectedUser) return;
@@ -71,7 +73,7 @@ export default function ChatWindow({
         {messages.map((msg, i) => (
           <div key={i} className="mb-2">
             <strong>
-              {msg.fromUserName === currentUser ? "Sen" : msg.fromUserName}
+              {msg.fromUserName === currentUser ? t("you") : msg.fromUserName}
             </strong>
             : {msg.content}{" "}
             <span className="text-xs text-gray-500">
@@ -83,12 +85,12 @@ export default function ChatWindow({
 
       <div className="flex gap-2">
         <Input
-          placeholder="Mesaj yazın..."
+          placeholder={t("input_placeholder")}
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
         />
-        <Button onClick={sendMessage}>Gönder</Button>
+        <Button onClick={sendMessage}>{t("send")}</Button>
       </div>
     </div>
   );

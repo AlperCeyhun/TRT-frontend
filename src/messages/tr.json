@@ -85,5 +85,12 @@
   		"title": "🚫 Yetkisiz Erişim",
   		"description": "Bu sayfaya erişim yetkiniz yok. Belki yetkilerinizi artırmanız gerekiyordur ya da geri dönün.",
   		"button_label": "Giriş sayfasına git"
+	},
+	"chat":{
+		"send":"Gönder",
+		"you":"Siz",
+		"input_placeholder": "Mesaj yazın...",
+		"window_placeholder": "Bir kullanıcı seçin.",
+		"login_placeholder": "Giriş yapılıyor..."
 	}
 }
