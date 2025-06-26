@@ -69,7 +69,7 @@ export default function ChatWindow({
 
   return (
     <div className="flex-1 p-4 flex flex-col justify-between">
-      <ScrollArea className="flex-1 mb-4 border p-2 rounded">
+      <ScrollArea className="mb-4 border p-2 rounded h-400 overflow-auto">
         {messages.map((msg, i) => (
           <div key={i} className="mb-2">
             <strong>
