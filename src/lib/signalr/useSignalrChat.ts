@@ -31,6 +31,5 @@ export function useSignalRChat(
       const connection = getConnection();
       connection?.off("ReceiveMessage");
     };
-    console.log("UseSignalrChat triggered.");
   }, [token, onMessageReceived]);
 }

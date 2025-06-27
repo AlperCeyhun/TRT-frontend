@@ -34,7 +34,12 @@ export default function ChatWindow({
 
   const onMessageReceived = useCallback(
     (message: string) => handleIncomingMessage(message, selectedUser, setMessages),
-    [selectedUser, setMessages]
+    [selectedUser]
+  );
+
+  useSignalRChat(
+    localStorage.getItem("token") || "",
+    onMessageReceived
   );
 
   useEffect(() => {
@@ -43,16 +48,11 @@ export default function ChatWindow({
     fetch(`http://localhost:5195/api/message/${currentUser}/${selectedUser}`)
       .then((res) => res.json())
       .then(setMessages);
-  }, [currentUser, selectedUser]);
+  }, [currentUser, selectedUser,messages]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  useSignalRChat(
-    localStorage.getItem("token") || "",
-    onMessageReceived
-  );
 
   const sendMessage = () => {
     if (!input.trim()) return;
