@@ -102,6 +102,7 @@
 		"button_delete_user": "Delete user",
 		"no_user_title": "No users Found.",
 		"error_remove_claim": "Failed to remove claim from user.",
-		"error_assign_claim": "Failed to assign claim to user."
+		"error_assign_claim": "Failed to assign claim to user.",
+		"loading": "Loading..."
 	}
 }

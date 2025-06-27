@@ -102,7 +102,9 @@
 		"button_delete_user": "Kullanıcıyı Sil",
 		"no_user_title": "Kullanıcı bulunamadı.",
 		"error_remove_claim": "Kullanıcıdan yetki alma başarısız.",
-		"error_assign_claim": "Kullanıcıya yetki verme başarısız"
+		"error_assign_claim": "Kullanıcıya yetki verme başarısız",
+		"loading": "Yükleniyor..."
+
 }
 
 }

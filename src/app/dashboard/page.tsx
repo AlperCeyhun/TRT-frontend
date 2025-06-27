@@ -195,7 +195,7 @@ export default function AdminDashboard() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <span className="text-white">Loading...</span>
+        <span className="text-white">{t("loading")}</span>
       </div>
     );
   }
