@@ -8,6 +8,8 @@ import { getConnection } from "@/lib/signalr/signalrConnection";
 import { useSignalRChat } from "@/lib/signalr/useSignalrChat";
 import { useTranslations } from "next-intl";
 import { useRef } from "react";
+import { handleIncomingMessage } from "@/lib/signalr/handleIncomingMessage";
+import { useCallback } from "react";
 
 interface ChatWindowProps {
   currentUser: string;
@@ -30,6 +32,11 @@ export default function ChatWindow({
   const t = useTranslations("chat");
   const bottomRef = useRef<HTMLDivElement>(null);
 
+  const onMessageReceived = useCallback(
+    (message: string) => handleIncomingMessage(message, selectedUser, setMessages),
+    [selectedUser, setMessages]
+  );
+
   useEffect(() => {
     if (!currentUser || !selectedUser) return;
 
@@ -42,19 +49,10 @@ export default function ChatWindow({
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  useSignalRChat(localStorage.getItem("token") || "", (message: string) => {
-    try {
-      const parsed: Message = JSON.parse(message);
-      if (
-        parsed.fromUserName === selectedUser ||
-        parsed.toUserName === selectedUser
-      ) {
-        setMessages((prev) => [...prev, parsed]);
-      }
-    } catch (e) {
-      console.error("Failed to parse message:", e);
-    }
-  });
+  useSignalRChat(
+    localStorage.getItem("token") || "",
+    onMessageReceived
+  );
 
   const sendMessage = () => {
     if (!input.trim()) return;
