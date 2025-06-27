@@ -1,10 +1,10 @@
-export type User = {
-  id: number;
-  username: string;
-};
+export type Claim = {
+    id: number;
+    claimName: string;
+}
 
-export async function getUsers(): Promise<User[]> {
-  const res = await fetch("http://localhost:5195/api/users", {
+export async function getAllClaim(): Promise<Claim[]> {
+  const res = await fetch(`http://localhost:5195/api/users/claims`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -16,5 +16,5 @@ export async function getUsers(): Promise<User[]> {
   }
 
   const data = await res.json();
-  return data as User[];
+  return data as Claim[];
 }
