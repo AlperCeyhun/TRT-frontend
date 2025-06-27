@@ -41,8 +41,8 @@ const LoginPage = () => {
         if (data.token) {
           localStorage.setItem("token", data.token);
           localStorage.setItem("username", username);
-          if (data.isAdmin) {
-            router.push("/datacard");
+          if (username === "admin") {
+            router.push("/dashboard");
           } else {
             router.push("/datatable");
           }
