@@ -81,16 +81,27 @@
 		"footer_content": "TRT todo app. All rights reserved.",
 		"title": "TODO LIST APP"
 	},
-	"unauthorized":{
+	"unauthorized": {
 		"title": "🚫 Unauthorized",
 		"description": "You don't have access to this page. Maybe level up your permissions or go back.",
 		"button_label": "Go to login"
 	},
-	"chat":{
+	"chat": {
 		"send":"Send",
 		"you":"You",
 		"input_placeholder": "Write message...",
 		"window_placeholder": "Select a user.",
 		"login_placeholder": "Logging in..."
+	},
+	"dashboard": {
+		"title": "Admin Dashboard",
+		"username": "Username",
+		"claims": "Claims",
+		"actions": "Actions",
+		"button_toggle_claim": "Toggle Claim",
+		"button_delete_user": "Delete user",
+		"no_user_title": "No users Found.",
+		"error_remove_claim": "Failed to remove claim from user.",
+		"error_assign_claim": "Failed to assign claim to user."
 	}
 }

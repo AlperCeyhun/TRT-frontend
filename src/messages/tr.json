@@ -86,11 +86,23 @@
   		"description": "Bu sayfaya erişim yetkiniz yok. Belki yetkilerinizi artırmanız gerekiyordur ya da geri dönün.",
   		"button_label": "Giriş sayfasına git"
 	},
-	"chat":{
+	"chat": {
 		"send":"Gönder",
 		"you":"Siz",
 		"input_placeholder": "Mesaj yazın...",
 		"window_placeholder": "Bir kullanıcı seçin.",
 		"login_placeholder": "Giriş yapılıyor..."
-	}
+	},
+	"dashboard": {
+		"title": "Admin Paneli",
+		"username": "Kullanıcı Adı",
+		"claims": "Yetkiler",
+		"actions": "İşlemler",
+		"button_toggle_claim": "Yetki Değiştir",
+		"button_delete_user": "Kullanıcıyı Sil",
+		"no_user_title": "Kullanıcı bulunamadı.",
+		"error_remove_claim": "Kullanıcıdan yetki alma başarısız.",
+		"error_assign_claim": "Kullanıcıya yetki verme başarısız"
+}
+
 }
