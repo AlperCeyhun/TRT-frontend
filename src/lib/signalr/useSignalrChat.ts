@@ -38,6 +38,7 @@ export function useSignalRChat(
           console.log("📥 Received via SignalR:", message);
           if (isMounted) {
             onMessageReceived(message);
+            console.log("📬 Message processed by onMessageReceived");
           }
         });
 
