@@ -2,15 +2,23 @@ import * as signalR from '@microsoft/signalr';
 
 let connection: signalR.HubConnection | null = null;
 
-export function initConnection(token: string) {
-  connection = new signalR.HubConnectionBuilder()
-    .withUrl('http://localhost:5195/chatHub', {
-      accessTokenFactory: () => token,
-    })
-    .withAutomaticReconnect()
-    .build();
+export async function initConnection(token: string) {
+  if (connection && connection.state === "Connected") {
+    console.log("🛡️ Reusing existing SignalR connection");
+    return;
+  }
 
-  return connection.start();
+  if (!connection || connection.state === "Disconnected") {
+    console.log("⏳ SignalR is connecting. Waiting...");
+    connection = new signalR.HubConnectionBuilder()
+      .withUrl("http://localhost:5195/chatHub", {
+        accessTokenFactory: () => token,
+      })
+      .withAutomaticReconnect()
+      .build();
+
+    await connection.start();
+  }
 }
 
 export function getConnection() {
