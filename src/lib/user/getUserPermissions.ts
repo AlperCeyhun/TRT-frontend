@@ -1,10 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-
-type DecodedToken = {
-  unique_name: string;
-  UserId: string;
-  permission: string[];
-};
+import { DecodedToken } from "./getUserid";
 
 export function getUserPermissions(): string[] {
   try {
