@@ -10,6 +10,7 @@ import { useTranslations } from "next-intl";
 import { useRef } from "react";
 import { handleIncomingMessage } from "@/lib/signalr/handleIncomingMessage";
 import { useCallback } from "react";
+import { toast } from "sonner";
 
 interface ChatWindowProps {
   currentUser: string;
@@ -47,8 +48,9 @@ export default function ChatWindow({
 
     fetch(`http://localhost:5195/api/message/${currentUser}/${selectedUser}`)
       .then((res) => res.json())
-      .then(setMessages);
-  }, [currentUser, selectedUser,messages]);
+      .then(setMessages)
+      .catch(() => toast.error("Failed to load chat history"));
+  }, [currentUser, selectedUser]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
