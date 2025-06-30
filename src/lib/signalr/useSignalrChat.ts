@@ -12,35 +12,30 @@ export function useSignalRChat(
 
     let isMounted = true;
 
+    // Define the handler ONCE so we can remove it later
+    const handler = (message: string) => {
+      if (isMounted) {
+        onMessageReceived(message);
+      }
+    };
+
     const setupSignalR = async () => {
       try {
-        console.log("🔌 Connecting with token:", token);
         await initConnection(token);
 
         const connection = getConnection();
         if (!connection) return;
-        console.log("✅ SignalR connection established");
-        
+
         await waitForConnected(connection);
 
         const userId = getUserid();
         if (connection.state === "Connected") {
           await connection.invoke("RegisterUser", userId);
-          console.log("🔗 User registered with ID:", userId);
-          console.log("Client connectionId:", connection.connectionId);
-        } else {
-          console.warn("⚠️ Connection not ready. Couldn't register user.");
         }
 
-        connection.off("ReceiveMessage");
-        
-        connection.on("ReceiveMessage", (message: string) => {
-          console.log("📥 Received via SignalR:", message);
-          if (isMounted) {
-            onMessageReceived(message);
-            console.log("📬 Message processed by onMessageReceived");
-          }
-        });
+        // Remove previous handler, then add the new one
+        connection.off("ReceiveMessage", handler);
+        connection.on("ReceiveMessage", handler);
 
       } catch (err) {
         console.error("❌ SignalR connection failed:", err);
@@ -52,7 +47,7 @@ export function useSignalRChat(
     return () => {
       isMounted = false;
       const connection = getConnection();
-      connection?.off("ReceiveMessage");
+      connection?.off("ReceiveMessage", handler);
     };
   }, [token, onMessageReceived]);
 }

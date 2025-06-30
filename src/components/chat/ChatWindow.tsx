@@ -62,13 +62,6 @@ export default function ChatWindow({
     const conn = getConnection();
     if (conn) {
       conn.invoke("SendPrivateMessage", currentUser, selectedUser, input);
-      const newMsg = {
-        content: input,
-        fromUserName: currentUser,
-        toUserName: selectedUser,
-        createdAt: new Date().toISOString(),
-      };
-      setMessages((prev) => [...prev, newMsg]);
       setInput("");
     }
   };
