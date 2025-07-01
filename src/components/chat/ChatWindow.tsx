@@ -46,10 +46,18 @@ export default function ChatWindow({
   useEffect(() => {
     if (!currentUser || !selectedUser) return;
 
-    fetch(`http://localhost:5195/api/message/${currentUser}/${selectedUser}`)
-      .then((res) => res.json())
-      .then(setMessages)
-      .catch(() => toast.error("Failed to load chat history"));
+    const fetchMessages = () => {
+      fetch(`http://localhost:5195/api/message/${currentUser}/${selectedUser}`)
+        .then((res) => res.json())
+        .then(setMessages)
+        .catch(() => toast.error("Failed to load chat history"));
+    };
+
+    fetchMessages();
+
+    const interval = setInterval(fetchMessages, 500);
+
+    return () => clearInterval(interval);
   }, [currentUser, selectedUser]);
 
   useEffect(() => {
